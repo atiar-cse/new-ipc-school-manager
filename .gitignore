@@ -53,6 +53,7 @@ dist-ssr
 resources/js/@iconify/icons-bundle.js
 
 # by Atiar
+composer.lock
 package-lock.json
 yarn.lock
 auto-imports.d.ts

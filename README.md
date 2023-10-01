@@ -33,3 +33,24 @@ npm run dev
 ```sh
 npm run build
 ```
+
+# ==============================
+
+## Xampp DNS Setup
+- go to `C:\xampp\apache\conf\extra` and add the following lines here on 'httpd-vhosts.conf'
+
+```
+<VirtualHost *:80>
+ ServerName www.cghris-new.test
+ ServerAlias cghris-new.test
+ DocumentRoot C:/xampp/htdocs/cghris-new/public
+</VirtualHost>
+```
+
+- Windows start menu >> Type/ Search for "Notepad" >> Right click >> Run as Administrator
+- File >> Open >> and go to `C:\Windows\System32\drivers\etc`
+- Show file type - All Files (*.*)
+- Open "hosts"
+- Add the line, save and close Notepad - `127.0.0.5      cghris-new.test`
+
+- Restart Xampp
