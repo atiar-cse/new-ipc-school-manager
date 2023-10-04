@@ -1,23 +1,72 @@
 <script setup>
-import { VForm } from 'vuetify/components/VForm'
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
+import axios from '@axios'
 import authV2LoginIllustrationBorderedDark from '@images/pages/auth-v2-login-illustration-bordered-dark.png'
 import authV2LoginIllustrationBorderedLight from '@images/pages/auth-v2-login-illustration-bordered-light.png'
 import authV2LoginIllustrationDark from '@images/pages/auth-v2-login-illustration-dark.png'
 import authV2LoginIllustrationLight from '@images/pages/auth-v2-login-illustration-light.png'
 import authV2MaskDark from '@images/pages/misc-mask-dark.png'
 import authV2MaskLight from '@images/pages/misc-mask-light.png'
-import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
-import { themeConfig } from '@themeConfig'
 
 const authThemeImg = useGenerateImageVariant(authV2LoginIllustrationLight, authV2LoginIllustrationDark, authV2LoginIllustrationBorderedLight, authV2LoginIllustrationBorderedDark, true)
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
+
+import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
+import { themeConfig } from '@themeConfig'
+import { VForm } from 'vuetify/components/VForm'
+import {
+  emailValidator,
+  requiredValidator,
+} from '@validators'
+
+const route = useRoute()
+const router = useRouter()
+
+const errors = ref({
+  email: undefined,
+  password: undefined,
+})
+
 const isPasswordVisible = ref(false)
 const refVForm = ref()
-const email = ref('admin@demo.com')
-const password = ref('admin')
+const email = ref()
+const password = ref()
 const rememberMe = ref(false)
+
+const login = () => {
+  axios.post('api/v1/users/login', {
+    email: email.value,
+    password: password.value,
+    rememberMe: rememberMe.value,
+  }).then(r => {
+    const { accessToken, userData } = r.data
+
+    // localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
+    // ability.update(userAbilities)
+    localStorage.setItem('userData', JSON.stringify(userData))
+    localStorage.setItem('accessToken', JSON.stringify(accessToken))
+
+    // Redirect to `to` query if exist or redirect to index route
+    router.replace(route.query.to ? String(route.query.to) : '/')
+  }).catch(e => {
+    // if (e.response && e.response.status === 401) {
+    //   console.log(666)
+    // }
+
+    const { errors: formErrors } = e.response.data
+
+    errors.value = formErrors
+    console.error(e.response.data)
+  })
+}
+
+const onSubmit = () => {
+  refVForm.value?.validate().then(({ valid: isValid }) => {
+    if (isValid)
+      login()
+  })
+}
 </script>
 
 <template>
@@ -62,7 +111,7 @@ const rememberMe = ref(false)
           />
 
           <h5 class="text-h5 mb-1">
-            Welcome to <span class="text-capitalize"> {{ themeConfig.app.title }} </span>! 👋🏻
+            Welcome to <span class="text-capitalize"> IPC School Manager</span>! 👋🏻
           </h5>
 
           <p class="mb-0">
@@ -71,24 +120,9 @@ const rememberMe = ref(false)
         </VCardText>
 
         <VCardText>
-          <VAlert
-            color="primary"
-            variant="tonal"
-          >
-            <p class="text-caption mb-2">
-              Admin Email: <strong>admin@demo.com</strong> / Pass: <strong>admin</strong>
-            </p>
-
-            <p class="text-caption mb-0">
-              Client Email: <strong>client@demo.com</strong> / Pass: <strong>client</strong>
-            </p>
-          </VAlert>
-        </VCardText>
-
-        <VCardText>
           <VForm
             ref="refVForm"
-            @submit="() => { }"
+            @submit.prevent="onSubmit"
           >
             <VRow>
               <!-- email -->
@@ -98,6 +132,8 @@ const rememberMe = ref(false)
                   label="Email"
                   type="email"
                   autofocus
+                  :rules="[requiredValidator, emailValidator]"
+                  :error-messages="errors.email"                  
                 />
               </VCol>
 
@@ -106,7 +142,9 @@ const rememberMe = ref(false)
                 <AppTextField
                   v-model="password"
                   label="Password"
+                  :rules="[requiredValidator]"
                   :type="isPasswordVisible ? 'text' : 'password'"
+                  :error-messages="errors.password"
                   :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />

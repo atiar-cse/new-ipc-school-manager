@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\Auth\LoginController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +14,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::prefix('/v1')->group(function () {
+    /** ======================================================
+     *      1. User Routes
+     * ====================================================== */
+    Route::prefix('/users')->group(function () {
+        /* Login route */
+        Route::post('/login', [LoginController::class, 'store'])->name("users.login");
+        Route::post('/register', [RegisterController::class, 'saveUser'])->name("users.register");
+        Route::post('/check-email', [ResetPasswordController::class, 'setCode'])->name("users.check_email");
+        Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])->name("users.reset_password");
+    });
+
+    /** ======================================================
+     *      2. Auth Routes
+     * ====================================================== */
+    Route::middleware('auth:sanctum')->group(function () {
+        /* auth:sanctum user routes */
+        Route::prefix('/users')->group(function () {
+            Route::get('/me', [UserController::class, 'me']);
+        });
+
+    });
+
+});    
