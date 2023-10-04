@@ -74,9 +74,14 @@ class LoginController extends Controller
             ]);
         }
 
+        $errors = [
+            'email' => ['Email or Password is Invalid'],
+        ];
+
         return response()->json([
             'success' => false,
             'message' => __('Invalid E-Mail or Password!'),
-        ], 401);
+            'errors' => $errors,
+        ], 422); // 401 unauthorized
     }
 }
