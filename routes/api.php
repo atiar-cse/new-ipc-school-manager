@@ -3,6 +3,7 @@
 // use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\Schools\SchoolCategoryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -38,7 +39,12 @@ Route::prefix('/v1')->group(function () {
         Route::prefix('/users')->group(function () {
             Route::get('/me', [UserController::class, 'me']);
         });
-
     });
 
-});    
+    /** ======================================================
+     *      2.1. Schools admin (later on it have to move into auth middleware)
+     * ====================================================== */
+    Route::prefix('/admin')->group(function () {
+        Route::apiResource('school_categories', SchoolCategoryController::class);
+    });
+});
