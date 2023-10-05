@@ -67,10 +67,16 @@ class LoginController extends Controller
                 $accessToken = $user->createToken('ApiTokenBearer')->plainTextToken;
             }
 
+            $userAbilities = [
+                'action' => 'manage',
+                'subject' => 'all',
+            ];  
+
             return response()->json([
                 'success' => true,
                 'userData' => $user,
                 'accessToken' => $accessToken,
+                'userAbilities' => [$userAbilities],
             ]);
         }
 
