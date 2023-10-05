@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('position')->nullable();
             $table->foreignId('school_category_id')->nullable();
             $table->foreignId('manager_id')->nullable();
-            $table->foreignId('address_id')->nullable();
-            $table->foreignId('mail_address_id')->nullable();
             $table->timestamps();
         });
     }

@@ -3,15 +3,12 @@
 namespace App\Models\Admin;
 
 // use Illuminate\Database\Eloquent\Factories\HasFactory;
-
-use App\Models\Schools\School;
 use Illuminate\Database\Eloquent\Model;
 
-class Address extends Model
+class MailAddress extends Model
 {
     // use HasFactory;
-
-    public function user()
+    public function school()
     {
         return $this->belongsTo(School::class);
     }

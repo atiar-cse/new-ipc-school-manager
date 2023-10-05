@@ -11,7 +11,8 @@ class SchoolController extends Controller
 {
     public function index()
     {
-        return School::paginate();
+        return School::with('address', 'mailaddress')
+            ->paginate();
     }
     public function store(StoreSchoolRequest $request)
     {
