@@ -15,7 +15,7 @@ class StoreSchoolCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:school_categories|max:50',
+            'name' => 'required|unique:school_categories,name|max:50',
         ];
     }
 

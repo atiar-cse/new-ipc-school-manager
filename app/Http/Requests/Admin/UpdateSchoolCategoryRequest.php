@@ -15,7 +15,7 @@ class UpdateSchoolCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:school_categories,name,' . $this->id . '|max:50',
+            'name' => 'required|unique:school_categories,name,' . $this->schoolCategory->id . '|max:50',
         ];
     }
 
@@ -26,12 +26,5 @@ class UpdateSchoolCategoryRequest extends FormRequest
             'message'   => 'Validation errors',
             'data'      => $validator->errors()
         ]));
-    }
-
-    public function messages()
-    {
-        return [
-            'name.required' => 'School category is required',
-        ];
     }
 }

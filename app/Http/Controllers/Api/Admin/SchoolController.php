@@ -76,13 +76,14 @@ class SchoolController extends Controller
             ], 200);
         }
     }
-    public function show(School $school)
+    public function show($id)
     {
-        return $school->with('address', 'mailaddress', 'user')->first();
+        return School::where('id', $id)->with('address', 'mailaddress', 'user')->first();
     }
     public function update(UpdateSchoolRequest $request, School $school)
     {
         try {
+
             DB::beginTransaction();
             //user
             $user = User::where('id', $school->user_id)->first();
@@ -121,7 +122,7 @@ class SchoolController extends Controller
             return response()->json([
                 'success'   => true,
                 'message'   => 'School has been updated successfully',
-                'data'      => $school->with('address', 'mailaddress', 'user')->first()
+                'data'      => $school
             ], 200);
         } catch (Exception $e) {
             DB::rollBack();
@@ -132,15 +133,4 @@ class SchoolController extends Controller
             ], 200);
         }
     }
-    /*
-    public function destroy(School $school)
-    {
-        $school->delete();
-        return response()->json([
-            'success'   => true,
-            'message'   => 'School has been deleted successfully',
-            'data'      => $school
-        ], 200);
-    }
-    */
 }
