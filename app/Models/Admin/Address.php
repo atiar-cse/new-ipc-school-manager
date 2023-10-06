@@ -6,6 +6,7 @@ namespace App\Models\Admin;
 
 use App\Models\Schools\School;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Address extends Model
 {
@@ -13,7 +14,7 @@ class Address extends Model
     protected $fillable = [
         'address', 'address2', 'city', 'zip', 'state', 'country'
     ];
-    public function school()
+    public function school(): BelongsTo
     {
         return $this->belongsTo(School::class);
     }

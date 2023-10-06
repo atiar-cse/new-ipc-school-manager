@@ -3,8 +3,11 @@
 namespace App\Models\Admin;
 
 // use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class School extends Model
 {
@@ -12,13 +15,17 @@ class School extends Model
     protected $fillable = [
         'name', 'position',
     ];
+    public function user(): BelongsTo
+    {
+        return $this->BelongsTo(User::class, 'user_id');
+    }
 
-    public function address()
+    public function address(): HasOne
     {
         return $this->hasOne(Address::class, 'school_id');
     }
 
-    public function mailaddress()
+    public function mailaddress(): HasOne
     {
         return $this->hasOne(MailAddress::class, 'school_id');
     }

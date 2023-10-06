@@ -33,7 +33,7 @@ class StoreSchoolRequest extends FormRequest
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required|min:6',
             //schools
-            'name' => 'required',
+            'school_name' => 'required|unique:schools,name',
             'position' => 'required',
             'school_category_id' => 'required',
             //address
@@ -42,7 +42,7 @@ class StoreSchoolRequest extends FormRequest
             'zip' => 'required',
             'state' => 'required',
             'country' => 'required',
-            //mail address
+            //mailing address
             'mailingAddress' => 'required',
             'mailingCity' => 'required',
             'mailingZip' => 'required',
