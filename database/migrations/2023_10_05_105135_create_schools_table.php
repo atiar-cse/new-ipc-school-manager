@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('schools', function (Blueprint $table) {
             $table->id();
-            $table->string('school_name')->unique();
+            $table->string('name')->unique();
             $table->string('position')->nullable();
             $table->foreignId('school_category_id')->nullable();
-            $table->foreignId('manager_id')->nullable();
             $table->timestamps();
         });
     }

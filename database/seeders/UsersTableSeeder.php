@@ -14,15 +14,17 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('users')->delete();
-        
-        \DB::table('users')->insert(array (
-            0 => 
-            array (
+
+        \DB::table('users')->insert(array(
+            0 =>
+            array(
                 'id' => 1,
-                'name' => 'Admin',
+                'first_name' => 'Atiar',
+                'last_name' => 'Rahman',
+                'username' => 'Admin',
                 'email' => 'atiar.cse@gmail.com',
                 'email_verified_at' => NULL,
                 'password' => '$2y$10$DE5x6wBCM5UzpO2ukQvEn.bJAqVPPJA34tI5PjRJzeDuZdg2a6/sq',
@@ -31,7 +33,5 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2023-10-04 03:13:25',
             ),
         ));
-        
-        
     }
 }

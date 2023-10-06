@@ -10,9 +10,7 @@ class School extends Model
 {
     // use HasFactory;
     protected $fillable = [
-
         'name', 'position',
-
     ];
 
     public function address()
