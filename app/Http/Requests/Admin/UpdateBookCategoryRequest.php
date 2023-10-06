@@ -6,19 +6,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class UpdateSchoolCategoryRequest extends FormRequest
+class UpdateBookCategoryRequest extends FormRequest
 {
     public function authorize(): bool
     {
         return true;
     }
-    public function rules(): array
-    {
-        return [
-            'name' => 'required|unique:school_categories,name,' . $this->category->id . '|max:120',
-        ];
-    }
-
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
@@ -26,5 +19,12 @@ class UpdateSchoolCategoryRequest extends FormRequest
             'message'   => 'Validation errors',
             'data'      => $validator->errors()
         ]));
+    }
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|max:120|unique:book_categories,name,' . $this->category->id,
+            'position' => 'required'
+        ];
     }
 }

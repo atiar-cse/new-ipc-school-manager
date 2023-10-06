@@ -16,11 +16,11 @@ class SchoolCategoryController extends Controller
 
     public function store(StoreSchoolCategoryRequest $request)
     {
-        $schoolCategory = SchoolCategory::create($request->all());
+        $category = SchoolCategory::create($request->all());
         return response()->json([
             'success'   => true,
             'message'   => 'School category has been created successfully',
-            'data'      => $schoolCategory
+            'data'      => $category
         ], 200);
     }
 
@@ -29,23 +29,23 @@ class SchoolCategoryController extends Controller
         return $schoolCategory;
     }
 
-    public function update(UpdateSchoolCategoryRequest $request, SchoolCategory $schoolCategory)
+    public function update(UpdateSchoolCategoryRequest $request, SchoolCategory $category)
     {
-        $schoolCategory->update($request->all());
+        $category->update($request->all());
         return response()->json([
             'success'   => true,
             'message'   => 'School category has been updated successfully',
-            'data'      => $schoolCategory
+            'data'      => $category
         ], 200);
     }
 
-    public function destroy(SchoolCategory $schoolCategory)
+    public function destroy(SchoolCategory $category)
     {
-        $schoolCategory->delete();
+        $category->delete();
         return response()->json([
             'success'   => true,
             'message'   => 'School category has been deleted successfully',
-            'data'      => $schoolCategory
+            'data'      => $category
         ], 200);
     }
 }

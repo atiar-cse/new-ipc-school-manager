@@ -22,6 +22,7 @@ class UpdateSchoolRequest extends FormRequest
     }
     public function rules(): array
     {
+
         return [
             //users
             'first_name' => 'required',
