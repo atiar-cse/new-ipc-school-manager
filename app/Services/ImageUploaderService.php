@@ -9,8 +9,7 @@ class ImageUploaderService
 {
     public static  function upload(UploadedFile $file, $folder = 'images')
     {
-        // uniqid() . '_' . 
-        $fileName = time() . '.' . $file->getClientOriginalExtension();
+        $fileName = uniqid() . '_' . time() . '.' . $file->getClientOriginalExtension();
 
         // Store the file in the specified folder
         $file->storeAs($folder, $fileName, 'public');

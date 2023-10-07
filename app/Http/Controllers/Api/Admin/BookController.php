@@ -21,6 +21,7 @@ class BookController extends Controller
     {
         try {
             DB::beginTransaction();
+
             if ($request->hasFile('book_image')) {
                 $uploadedImage = $request->file('book_image');
                 $imagePath = ImageUploaderService::upload($uploadedImage, 'images/books/thumbnail');
@@ -33,6 +34,7 @@ class BookController extends Controller
                 $request->merge(['file' => $imagePath]);
             }
             $book = Book::create($request->all());
+
             $book_group = [];
             if ($request->has('group_id')) {
                 if ($request->input('group_id')) {
@@ -63,7 +65,6 @@ class BookController extends Controller
                 }
                 DB::table('book_tag')->insert($book_tag);
             }
-
 
             DB::commit();
             return response()->json([
@@ -149,6 +150,7 @@ class BookController extends Controller
             }
 
             DB::commit();
+
             return response()->json([
                 'success'   => true,
                 'message'   => 'Book has been created successfully',
