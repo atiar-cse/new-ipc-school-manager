@@ -27,11 +27,4 @@ class StoreSchoolCategoryRequest extends FormRequest
             'data'      => $validator->errors()
         ]));
     }
-
-    public function messages()
-    {
-        return [
-            'name.required' => 'School category is required',
-        ];
-    }
 }

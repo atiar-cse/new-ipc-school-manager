@@ -12,6 +12,14 @@ class UpdateBookCategoryRequest extends FormRequest
     {
         return true;
     }
+
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|max:120|unique:book_categories,name,' . $this->category->id,
+            'position' => 'required',
+        ];
+    }
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
@@ -19,12 +27,5 @@ class UpdateBookCategoryRequest extends FormRequest
             'message'   => 'Validation errors',
             'data'      => $validator->errors()
         ]));
-    }
-    public function rules(): array
-    {
-        return [
-            'name' => 'required|max:120|unique:book_categories,name,' . $this->category->id,
-            'position' => 'required'
-        ];
     }
 }

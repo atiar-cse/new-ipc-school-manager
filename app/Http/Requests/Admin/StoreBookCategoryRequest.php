@@ -24,7 +24,7 @@ class StoreBookCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:book_categories,name',
-            'position' => 'required'
+            'position' => 'required',
         ];
     }
 }
