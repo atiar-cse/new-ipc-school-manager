@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\BookCategory;
 use App\Http\Requests\Admin\StoreBookCategoryRequest;
 use App\Http\Requests\Admin\UpdateBookCategoryRequest;
+use App\Services\ImageUploaderService;
 
 class BookCategoryController extends Controller
 {
@@ -16,7 +17,13 @@ class BookCategoryController extends Controller
 
     public function store(StoreBookCategoryRequest $request)
     {
+        if ($request->hasFile('icon_image')) {
+            $uploadedImage = $request->file('icon_image');
+            $imagePath = ImageUploaderService::upload($uploadedImage, 'images/books/categories');
+            $request->merge(['icon' => $imagePath]);
+        }
         $bookCategory = BookCategory::create($request->all());
+
         return response()->json([
             'success'   => true,
             'message'   => 'Book category has been created successfully',
@@ -29,6 +36,11 @@ class BookCategoryController extends Controller
     }
     public function update(UpdateBookCategoryRequest $request, BookCategory $category)
     {
+        if ($request->hasFile('icon_image')) {
+            $uploadedImage = $request->file('icon_image');
+            $imagePath = ImageUploaderService::upload($uploadedImage, 'images/books/categories');
+            $request->merge(['icon' => $imagePath]);
+        }
         $category->update($request->all());
         return response()->json([
             'success'   => true,

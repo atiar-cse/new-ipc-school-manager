@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class StoreSchoolCategoryRequest extends FormRequest
+class StoreGroupRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class StoreSchoolCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:school_categories,name|max:50',
+            'name' => 'required|unique:groups,name|max:50',
         ];
     }
 

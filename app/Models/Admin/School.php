@@ -19,9 +19,9 @@ class School extends Model
     {
         return $this->BelongsTo(User::class, 'user_id');
     }
-    public function category(): BelongsTo
+    public function group(): BelongsTo
     {
-        return $this->BelongsTo(SchoolCategory::class, 'school_category_id');
+        return $this->BelongsTo(Group::class, 'group_id');
     }
 
     public function address(): HasOne

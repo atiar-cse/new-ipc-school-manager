@@ -3,9 +3,10 @@
 // use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\LoginController;
-use App\Http\Controllers\Api\Admin\SchoolCategoryController;
+use App\Http\Controllers\Api\Admin\GroupController;
 use App\Http\Controllers\Api\Admin\SchoolController;
 use App\Http\Controllers\Api\Admin\BookCategoryController;
+use App\Http\Controllers\Api\Admin\BookController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -47,12 +48,15 @@ Route::prefix('/v1')->group(function () {
      *      2.1. Schools admin (later on it have to move into auth middleware)
      * ====================================================== */
     Route::prefix('/admin')->group(function () {
-        Route::apiResource('/schools/category', SchoolCategoryController::class);
+        Route::apiResource('/groups', GroupController::class);
     });
     Route::prefix('/admin')->group(function () {
         Route::apiResource('/schools', SchoolController::class);
     });
     Route::prefix('/admin')->group(function () {
         Route::apiResource('/books/category', BookCategoryController::class);
+    });
+    Route::prefix('/admin')->group(function () {
+        Route::apiResource('/books', BookController::class);
     });
 });

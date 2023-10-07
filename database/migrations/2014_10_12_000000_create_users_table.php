@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name', 50);
             $table->string('username', 50)->unique();
             $table->string('email', 100)->unique();
-            $table->foreignId('group_id')->default(2); //role or group
+            $table->foreignId('user_group_id')->default(2); //role or group
             $table->foreignId('currency_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

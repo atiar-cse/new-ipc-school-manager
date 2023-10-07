@@ -29,13 +29,13 @@ class UpdateSchoolRequest extends FormRequest
             'last_name' => 'required',
             'username' => 'required|alpha_dash|unique:users,username,' . $this->school->user_id,
             'email' => 'required|email|unique:users,email,' . $this->school->user_id,
-            'group_id' => 'required',
+            'user_group_id' => 'required',
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required|min:6',
             //schools
             'school_name' => 'required|unique:schools,name,' . $this->school->id,
             'position' => 'required',
-            'school_category_id' => 'required',
+            'group_id' => 'required',
             //address
             'address' => 'required',
             'city' => 'required',

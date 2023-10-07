@@ -6,11 +6,20 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class StoreBookCategoryRequest extends FormRequest
+class StoreBookRequest extends FormRequest
 {
     public function authorize(): bool
     {
         return true;
+    }
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|unique:books,name|max:150',
+            'book_category_id' => 'required',
+            'book_image' => 'required|image',
+            'book_file' => 'required',
+        ];
     }
     public function failedValidation(Validator $validator)
     {
@@ -19,13 +28,5 @@ class StoreBookCategoryRequest extends FormRequest
             'message'   => 'Validation errors',
             'data'      => $validator->errors()
         ]));
-    }
-    public function rules(): array
-    {
-        return [
-            'name' => 'required|unique:book_categories,name',
-            'position' => 'required',
-            'icon_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ];
     }
 }

@@ -17,7 +17,7 @@ class SchoolController extends Controller
 {
     public function index()
     {
-        return School::with('category', 'address', 'mailaddress', 'user')
+        return School::with('category')
             ->paginate();
     }
     public function store(StoreSchoolRequest $request)
@@ -30,7 +30,7 @@ class SchoolController extends Controller
             $user->last_name = $request->last_name;
             $user->username = $request->username;
             $user->email = $request->email;
-            $user->group_id = $request->group_id;
+            $user->user_group_id = $request->user_group_id;
             $user->currency_id = $request->currency_id;
             $user->password  = Hash::make($request->password);
             $user->save();
@@ -39,7 +39,7 @@ class SchoolController extends Controller
             $school->name  = $request->school_name;
             $school->position = $request->position;
             $school->user_id  = $user->id;
-            $school->school_category_id = $request->school_category_id;
+            $school->group_id = $request->group_id;
             $school->save();
             //address
             $address =  new Address;
@@ -91,14 +91,14 @@ class SchoolController extends Controller
             $user->last_name = $request->last_name;
             $user->username = $request->username;
             $user->email = $request->email;
-            $user->group_id = $request->group_id;
+            $user->user_group_id = $request->user_group_id;
             $user->currency_id = $request->currency_id;
             $user->password  = Hash::make($request->password);
             $user->save();
             //school 
             $school->name  = $request->school_name;
             $school->position = $request->position;
-            $school->school_category_id = $request->school_category_id;
+            $school->group_id = $request->group_id;
             $school->save();
             //address
             $address =  Address::where('school_id', $school->id)->first();
