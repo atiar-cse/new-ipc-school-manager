@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('book_tags', function (Blueprint $table) {
+        Schema::create('book_tag', function (Blueprint $table) {
             $table->id();
             $table->foreignId('book_id');
             $table->foreignId('tag_id');
-            $table->timestamps();
         });
     }
 

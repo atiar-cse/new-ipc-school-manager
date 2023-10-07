@@ -13,15 +13,6 @@ class UpdateBookRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
-    {
-        return [
-            'name' => "required|unique:books,name,{$this->book->id}|max:150",
-            'book_category_id' => "required",
-            'book_image' => 'required|image',
-            'book_file' => 'required',
-        ];
-    }
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
@@ -29,5 +20,13 @@ class UpdateBookRequest extends FormRequest
             'message'   => 'Validation errors',
             'data'      => $validator->errors()
         ]));
+    }
+
+    public function rules(): array
+    {
+        return [
+            'name' => "required|unique:books,name,{$this->book->id}|max:150",
+            'book_category_id' => "required"
+        ];
     }
 }

@@ -21,9 +21,9 @@ class Book extends Model
         return $this->belongsTo(BookCategory::class, 'book_category_id');
     }
 
-    public function tag(): HasOne
+    public function tags(): BelongsToMany
     {
-        return $this->hasOne(BookTag::class, 'book_id');
+        return $this->belongsToMany(Tag::class);
     }
     public function groups(): BelongsToMany
     {

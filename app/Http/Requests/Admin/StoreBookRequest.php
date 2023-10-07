@@ -17,7 +17,7 @@ class StoreBookRequest extends FormRequest
         return [
             'name' => 'required|unique:books,name|max:150',
             'book_category_id' => 'required',
-            'book_image' => 'required|image',
+            'book_image' => 'required',
             'book_file' => 'required',
         ];
     }

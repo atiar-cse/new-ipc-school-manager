@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Book;
+use App\Models\Admin\Tag;
 use App\Http\Requests\Admin\StoreBookRequest;
 use App\Http\Requests\Admin\UpdateBookRequest;
 use App\Services\ImageUploaderService;
@@ -14,13 +15,12 @@ class BookController extends Controller
 {
     public function index()
     {
-        return Book::with('category', 'groups')->paginate();
+        return Book::paginate();
     }
     public function store(StoreBookRequest $request)
     {
         try {
             DB::beginTransaction();
-
             if ($request->hasFile('book_image')) {
                 $uploadedImage = $request->file('book_image');
                 $imagePath = ImageUploaderService::upload($uploadedImage, 'images/books/thumbnail');
@@ -36,10 +36,10 @@ class BookController extends Controller
             $book_group = [];
             if ($request->has('group_id')) {
                 if ($request->input('group_id')) {
-                    foreach ($request->input('group_id') as $group) {
+                    foreach ($request->input('group_id') as $group_id) {
                         $book_group[] = [
                             'book_id' => $book->id,
-                            'group_id' => $group,
+                            'group_id' => $group_id,
                             'created_at' => time(),
                         ];
                     }
@@ -48,6 +48,23 @@ class BookController extends Controller
             if (!empty($book_group)) {
                 DB::table('book_group')->insert($book_group);
             }
+
+            if ($request->input('tags')) {
+                $book_tag = [];
+                foreach ($request->input('tags') as $input_tag) {
+                    $tag = Tag::where('name', $input_tag)->first();
+                    if ($tag) {
+                        $book_tag[] = ['book_id' => $book->id, 'tag_id' => $tag->id];
+                    } else {
+                        $new_tag = DB::table('tags')->insertGetId(['name' => $book_group]);
+
+                        $book_tag[] = ['book_id' => $book->id, 'tag_id' => $new_tag];
+                    }
+                }
+                DB::table('book_tag')->insert($book_tag);
+            }
+
+
             DB::commit();
             return response()->json([
                 'success'   => true,
@@ -65,20 +82,27 @@ class BookController extends Controller
     }
     public function show(Book $book)
     {
-        return $book::with('category', 'groups')->first();
+        return $book::with('category', 'groups', 'tags')->first();
     }
     public function update(UpdateBookRequest $request, Book $book)
     {
         try {
             DB::beginTransaction();
-
             if ($request->hasFile('book_image')) {
+                //delete previous image
+                if (!empty($book->thumbnail)) {
+                    unlink(storage_path('app/public/' . $book->thumbnail));
+                }
                 $uploadedImage = $request->file('book_image');
                 $imagePath = ImageUploaderService::upload($uploadedImage, 'images/books/thumbnail');
                 $request->merge(['thumbnail' => $imagePath]);
             }
 
             if ($request->hasFile('book_file')) {
+                //delete previous file
+                if (!empty($book->file)) {
+                    unlink(storage_path('app/public/' . $book->file));
+                }
                 $uploadedImage = $request->file('book_file');
                 $imagePath = ImageUploaderService::upload($uploadedImage, 'images/books/files');
                 $request->merge(['file' => $imagePath]);
@@ -95,7 +119,7 @@ class BookController extends Controller
                         $book_group[] = [
                             'book_id' => $book->id,
                             'group_id' => $group,
-                            'created_at' => time(),
+                            'updated_at' => time(),
                         ];
                     }
                 }
@@ -103,6 +127,25 @@ class BookController extends Controller
 
             if (!empty($book_group)) {
                 \DB::table('book_group')->insert($book_group);
+            }
+
+            if ($request->input('tags')) {
+
+                DB::table('book_tag')->where('book_id', $book->id)->delete();
+                $book_tag = [];
+
+                foreach ($request->input('tags') as $input_tag) {
+
+                    $tag = Tag::where('name', $input_tag)->first();
+
+                    if ($tag) {
+                        $book_tag[] = ['book_id' => $book->id, 'tag_id' => $tag->id];
+                    } else {
+                        $new_tag = DB::table('tags')->insertGetId(['name' => $book_group]);
+                        $book_tag[] = ['book_id' => $book->id, 'tag_id' => $new_tag];
+                    }
+                }
+                DB::table('book_tag')->insert($book_tag);
             }
 
             DB::commit();
