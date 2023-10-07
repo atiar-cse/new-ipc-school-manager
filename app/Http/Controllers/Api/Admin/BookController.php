@@ -123,6 +123,12 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         $book->delete();
+        if (!empty($book->thumbnail)) {
+            unlink(storage_path('app/public/' . $book->thumbnail));
+        }
+        if (!empty($book->file)) {
+            unlink(storage_path('app/public/' . $book->file));
+        }
         return response()->json([
             'success'   => true,
             'message'   => 'Book has been deleted successfully',

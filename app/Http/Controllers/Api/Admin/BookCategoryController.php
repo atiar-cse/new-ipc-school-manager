@@ -50,6 +50,9 @@ class BookCategoryController extends Controller
     }
     public function destroy(BookCategory $category)
     {
+        if (!empty($category->icon)) {
+            unlink(storage_path('app/public/' . $category->icon));
+        }
         $category->delete();
         return response()->json([
             'success'   => true,
