@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\Admin\GroupController;
 use App\Http\Controllers\Api\Admin\SchoolController;
 use App\Http\Controllers\Api\Admin\BookCategoryController;
 use App\Http\Controllers\Api\Admin\BookController;
+use App\Http\Controllers\Api\Admin\RoleController;
+use App\Http\Controllers\Api\Admin\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,9 +31,9 @@ Route::prefix('/v1')->group(function () {
     Route::prefix('/users')->group(function () {
         /* Login route */
         Route::post('/login', [LoginController::class, 'store'])->name("users.login");
-        Route::post('/register', [RegisterController::class, 'saveUser'])->name("users.register");
-        Route::post('/check-email', [ResetPasswordController::class, 'setCode'])->name("users.check_email");
-        Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])->name("users.reset_password");
+        // Route::post('/register', [RegisterController::class, 'saveUser'])->name("users.register");
+        // Route::post('/check-email', [ResetPasswordController::class, 'setCode'])->name("users.check_email");
+        // Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])->name("users.reset_password");
     });
 
     /** ======================================================
@@ -58,5 +60,11 @@ Route::prefix('/v1')->group(function () {
     });
     Route::prefix('/admin')->group(function () {
         Route::apiResource('/books', BookController::class);
+    });
+    Route::prefix('/admin')->group(function () {
+        Route::apiResource('/roles', RoleController::class);
+    });
+    Route::prefix('/admin')->group(function () {
+        Route::apiResource('/users', UserController::class);
     });
 });

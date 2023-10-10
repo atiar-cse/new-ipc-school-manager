@@ -17,7 +17,7 @@ class SchoolController extends Controller
 {
     public function index()
     {
-        return School::with('category')
+        return School::with('group')
             ->paginate();
     }
     public function store(StoreSchoolRequest $request)
@@ -78,7 +78,7 @@ class SchoolController extends Controller
     }
     public function show($id)
     {
-        return School::where('id', $id)->with('category', 'address', 'mailaddress', 'user')->first();
+        return School::where('id', $id)->with('group', 'address', 'mailaddress', 'user')->first();
     }
     public function update(UpdateSchoolRequest $request, School $school)
     {
