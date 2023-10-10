@@ -36,9 +36,9 @@ class BookController extends Controller
             $book = Book::create($request->all());
 
             $book_group = [];
-            if ($request->has('group_id')) {
-                if ($request->input('group_id')) {
-                    foreach ($request->input('group_id') as $group_id) {
+            if ($request->has('group_ids')) {
+                if ($request->input('group_ids')) {
+                    foreach ($request->input('group_ids') as $group_id) {
                         $book_group[] = [
                             'book_id' => $book->id,
                             'group_id' => $group_id,
