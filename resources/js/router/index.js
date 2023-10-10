@@ -13,6 +13,14 @@ const router = createRouter({
       path: '/',
       redirect: to => {
         const userData = JSON.parse(localStorage.getItem('userData') || '{}')
+
+        if(userData.id){
+          return { name: 'second-page' }
+        } else {
+          return { name: 'login', query: to.query }
+        }
+
+
         const userRole = (userData && userData.role) ? userData.role : null
         if (userRole === 'admin')
           return { name: 'second-page' } //dashboards-analytics
