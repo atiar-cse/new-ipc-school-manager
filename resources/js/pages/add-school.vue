@@ -1,7 +1,8 @@
 <script setup>
-const tab = ref('personal-info')
-const firstName = ref('')
-const lastName = ref('')
+import axios from '@axios'
+const tab = ref('general')
+const schoolName = ref('')
+const mainUser = ref('')
 const country = ref()
 const birthDate = ref('')
 const phoneNo = ref()
@@ -44,14 +45,14 @@ const isCPasswordVisible = ref(false)
 
 <template>
   <VTabs v-model="tab">
-    <VTab value="personal-info">
-      Personal Info
+    <VTab value="general">
+      General
     </VTab>
-    <VTab value="account-details">
-      Account Details
+    <VTab value="address">
+      Address 
     </VTab>
-    <VTab value="social-links">
-      Social Links
+    <VTab value="mail-address">
+      Mail Address
     </VTab>
   </VTabs>
 
@@ -61,7 +62,7 @@ const isCPasswordVisible = ref(false)
         v-model="tab"
         class="disable-tab-transition"
       >
-        <VWindowItem value="personal-info">
+        <VWindowItem value="general">
           <VForm class="mt-2">
             <VRow>
               <VCol
@@ -69,9 +70,10 @@ const isCPasswordVisible = ref(false)
                 cols="12"
               >
                 <AppTextField
-                  v-model="firstName"
-                  label="First name"
+                  v-model="schoolName"
+                  label="School name"
                 />
+                
               </VCol>
 
               <VCol
@@ -79,9 +81,57 @@ const isCPasswordVisible = ref(false)
                 cols="12"
               >
                 <AppTextField
-                  v-model="lastName"
-                  label="Last name"
+                  v-model="mainUser"
+                  label="Main User"
                 />
+              </VCol>
+              <VCol 
+                cols="12" 
+                md="6"
+               >
+               <AppTextField
+                  v-model="email"
+                  label="Main User Email"
+                  suffix="@example.com"
+                />
+
+              </VCol>
+              <VCol 
+                cols="12" 
+                md="6"
+               >
+               <AppTextField
+                  v-model="password"
+                  label="Main User Password"
+                  :type="isPasswordVisible ? 'text' : 'password'"
+                  :append-inner-icon="isPasswordVisible ? 'tabler-eye' : 'tabler-eye-off'"
+                  @click:append-inner="isPasswordVisible = !isPasswordVisible"
+                />
+
+              </VCol>
+              <VCol
+                cols="12"
+                md="6"
+              >
+              <AppTextField
+                  v-model="cPassword"
+                  label="Confirm Password"
+                  :type="isCPasswordVisible ? 'text' : 'password'"
+                  :append-inner-icon="isCPasswordVisible ? 'tabler-eye' : 'tabler-eye-off'"
+                  @click:append-inner="isCPasswordVisible = !isCPasswordVisible"
+                />
+
+              </VCol>
+              <VCol
+                cols="12"
+                md="6"
+              >
+              <AppSelect
+                  v-model="country"
+                  :items="countryList"
+                  label="Currency Symbol"
+                />
+
               </VCol>
 
               <VCol
@@ -91,7 +141,7 @@ const isCPasswordVisible = ref(false)
                 <AppSelect
                   v-model="country"
                   :items="countryList"
-                  label="Country"
+                  label="Group Category"
                 />
               </VCol>
 
@@ -99,40 +149,18 @@ const isCPasswordVisible = ref(false)
                 cols="12"
                 md="6"
               >
-                <AppSelect
-                  v-model="languages"
-                  :items="languageList"
-                  multiple
-                  chips
-                  clearable
-                  label="Language"
+              <AppSelect
+                  v-model="country"
+                  :items="countryList"
+                  label="Manager"
                 />
               </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <AppTextField
-                  v-model="birthDate"
-                  label="Birth Date"
-                  placeholder="YYYY-MM-DD"
-                />
-              </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <AppTextField
-                  v-model="phoneNo"
-                  type="number"
-                  label="Phone No."
-                />
-              </VCol>
+              
             </VRow>
           </VForm>
         </VWindowItem>
 
-        <VWindowItem value="account-details">
+        <VWindowItem value="address">
           <VForm class="mt-2">
             <VRow>
               <VCol
@@ -141,7 +169,7 @@ const isCPasswordVisible = ref(false)
               >
                 <AppTextField
                   v-model="username"
-                  label="Username"
+                  label="Address Line 1"
                 />
               </VCol>
 
@@ -149,10 +177,9 @@ const isCPasswordVisible = ref(false)
                 cols="12"
                 md="6"
               >
-                <AppTextField
-                  v-model="email"
-                  label="Email"
-                  suffix="@example.com"
+              <AppTextField
+                  v-model="username"
+                  label="Address Line 2"
                 />
               </VCol>
 
@@ -160,12 +187,10 @@ const isCPasswordVisible = ref(false)
                 cols="12"
                 md="6"
               >
-                <AppTextField
-                  v-model="password"
-                  label="Password"
-                  :type="isPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isPasswordVisible ? 'tabler-eye' : 'tabler-eye-off'"
-                  @click:append-inner="isPasswordVisible = !isPasswordVisible"
+              <AppSelect
+                  v-model="country"
+                  :items="countryList"
+                  label="City"
                 />
               </VCol>
 
@@ -173,73 +198,97 @@ const isCPasswordVisible = ref(false)
                 cols="12"
                 md="6"
               >
-                <AppTextField
-                  v-model="cPassword"
-                  label="Confirm Password"
-                  :type="isCPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isCPasswordVisible ? 'tabler-eye' : 'tabler-eye-off'"
-                  @click:append-inner="isCPasswordVisible = !isCPasswordVisible"
+              <AppTextField
+                  v-model="zip"
+                  label="Zip"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="6"
+              >
+              <AppSelect
+                  v-model="country"
+                  :items="countryList"
+                  label="State"
+                />
+              </VCol>
+              <VCol
+                cols="12"
+                md="6"
+              >
+              <AppSelect
+                  v-model="country"
+                  :items="countryList"
+                  label="Country"
                 />
               </VCol>
             </VRow>
           </VForm>
         </VWindowItem>
 
-        <VWindowItem value="social-links">
+        <VWindowItem value="mail-address">
           <VForm class="mt-2">
             <VRow>
+                
               <VCol
                 cols="12"
                 md="6"
               >
                 <AppTextField
-                  v-model="twitterLink"
-                  label="Twitter"
+                  v-model="username"
+                  label="Address Line 1"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+              <AppTextField
+                  v-model="username"
+                  label="Address Line 2"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+              <AppSelect
+                  v-model="country"
+                  :items="countryList"
+                  label="City"
+                />
+              </VCol>
+
+              <VCol
+                cols="12"
+                md="6"
+              >
+              <AppTextField
+                  v-model="zip"
+                  label="Zip"
                 />
               </VCol>
               <VCol
                 cols="12"
                 md="6"
               >
-                <AppTextField
-                  v-model="facebookLink"
-                  label="Facebook"
+              <AppSelect
+                  v-model="country"
+                  :items="countryList"
+                  label="State"
                 />
               </VCol>
               <VCol
                 cols="12"
                 md="6"
               >
-                <AppTextField
-                  v-model="googlePlusLink"
-                  label="Google+"
-                />
-              </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <AppTextField
-                  v-model="linkedInLink"
-                  label="LinkedIn"
-                />
-              </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <AppTextField
-                  v-model="instagramLink"
-                  label="Instagram"
-                />
-              </VCol>
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <AppTextField
-                  v-model="quoraLink"
-                  label="Quora"
+              <AppSelect
+                  v-model="country"
+                  :items="countryList"
+                  label="Country"
                 />
               </VCol>
             </VRow>
