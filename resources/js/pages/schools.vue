@@ -52,15 +52,16 @@ const headers = [
           >
           
           <div class="demo-space-x">
+            <VBtn>
+              Category
+            </VBtn>
             <router-link to="/add-school">
                 <VBtn class="m-3">
                     Add School
                 </VBtn>
             </router-link>
        
-          <VBtn>
-            Category
-          </VBtn>
+          
           </div>
           </VCol>
         </VRow>
