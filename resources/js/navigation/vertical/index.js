@@ -9,4 +9,9 @@ export default [
     to: { name: 'second-page' },
     icon: { icon: 'tabler-file' },
   },
+  {
+    title: 'Schools',
+    to: { name: 'schools' },
+    icon: { icon: 'tabler-smart-home' },
+  },
 ]
