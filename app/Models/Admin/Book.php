@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Book extends Model
 {
-    protected $fillable = [
-        'name', 'description', 'file', 'image', 'disabled'
-    ];
     use SoftDeletes;
     protected $dates = ['deleted_at'];
+    protected $fillable = [
+        'name', 'book_category_id', 'description', 'file', 'image', 'disabled'
+    ];
 
     public function category(): BelongsTo
     {

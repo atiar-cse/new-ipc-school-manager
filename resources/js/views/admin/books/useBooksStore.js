@@ -9,9 +9,8 @@ export const useBooksStore = defineStore('BooksStore', {
     // 👉 Add User
     addUser(userData) {
       return new Promise((resolve, reject) => {
-        axios.post('/api/v1/admin/books', {
-          user: userData,
-        }).then(response => resolve(response))
+        axios.post('/api/v1/admin/books', userData) // {user: userData,}
+          .then(response => resolve(response))
           .catch(error => reject(error))
       })
     },
@@ -20,6 +19,15 @@ export const useBooksStore = defineStore('BooksStore', {
     fetchUser(id) {
       return new Promise((resolve, reject) => {
         axios.get(`/api/v1/admin/books/${id}`).then(response => resolve(response)).catch(error => reject(error))
+      })
+    },
+
+    // 👉 Update User
+    updateUser(userData) {
+      return new Promise((resolve, reject) => {
+        axios.put(`/api/v1/admin/books/${userData.id}`, userData) // {user: userData,}
+          .then(response => resolve(response))
+          .catch(error => reject(error))
       })
     },
 
