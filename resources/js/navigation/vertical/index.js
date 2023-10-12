@@ -1,3 +1,5 @@
+import admin from './admin'
+
 export default [
   {
     title: 'Home',
@@ -14,4 +16,5 @@ export default [
     to: { name: 'schools' },
     icon: { icon: 'tabler-smart-home' },
   },
+  ...admin
 ]
