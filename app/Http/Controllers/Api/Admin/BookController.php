@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\UpdateBookRequest;
 use App\Services\ImageUploaderService;
 use Exception;
 use DB;
+use Carbon\Carbon;
 
 class BookController extends Controller
 {
@@ -42,7 +43,7 @@ class BookController extends Controller
                         $book_group[] = [
                             'book_id' => $book->id,
                             'group_id' => $group_id,
-                            'created_at' => time(),
+                            'created_at' => Carbon::now(),
                         ];
                     }
                 }
@@ -58,7 +59,7 @@ class BookController extends Controller
                     if ($tag) {
                         $book_tag[] = ['book_id' => $book->id, 'tag_id' => $tag->id];
                     } else {
-                        $new_tag = DB::table('tags')->insertGetId(['name' => $book_group]);
+                        $new_tag = DB::table('tags')->insertGetId(['name' => $input_tag]);
 
                         $book_tag[] = ['book_id' => $book->id, 'tag_id' => $new_tag];
                     }
@@ -83,7 +84,7 @@ class BookController extends Controller
     }
     public function show(Book $book)
     {
-        return $book::with('category', 'groups', 'tags')->first();
+        return Book::where('id', $book->id)->with('category', 'groups', 'tags')->first();
     }
     public function update(UpdateBookRequest $request, Book $book)
     {
@@ -111,16 +112,16 @@ class BookController extends Controller
             $book->update($request->all());
 
             $book_group = [];
-            if ($request->has('group_id')) {
-                if ($request->input('group_id')) {
+            if ($request->has('group_ids')) {
+                if ($request->input('group_ids')) {
 
                     DB::table('book_group')->where('book_id', $book->id)->delete();
 
-                    foreach ($request->input('group_id') as $group) {
+                    foreach ($request->input('group_ids') as $group) {
                         $book_group[] = [
                             'book_id' => $book->id,
                             'group_id' => $group,
-                            'updated_at' => time(),
+                            'updated_at' => Carbon::now(),
                         ];
                     }
                 }
@@ -136,13 +137,12 @@ class BookController extends Controller
                 $book_tag = [];
 
                 foreach ($request->input('tags') as $input_tag) {
-
                     $tag = Tag::where('name', $input_tag)->first();
 
                     if ($tag) {
                         $book_tag[] = ['book_id' => $book->id, 'tag_id' => $tag->id];
                     } else {
-                        $new_tag = DB::table('tags')->insertGetId(['name' => $book_group]);
+                        $new_tag = DB::table('tags')->insertGetId(['name' => $input_tag]);
                         $book_tag[] = ['book_id' => $book->id, 'tag_id' => $new_tag];
                     }
                 }

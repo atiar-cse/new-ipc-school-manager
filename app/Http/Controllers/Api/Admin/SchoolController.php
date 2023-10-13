@@ -30,7 +30,7 @@ class SchoolController extends Controller
             $user->last_name = $request->last_name;
             $user->username = $request->username;
             $user->email = $request->email;
-            $user->user_group_id = $request->user_group_id;
+            $user->role_id = $request->role_id;
             $user->currency_id = $request->currency_id;
             $user->password  = Hash::make($request->password);
             $user->save();
@@ -91,7 +91,7 @@ class SchoolController extends Controller
             $user->last_name = $request->last_name;
             $user->username = $request->username;
             $user->email = $request->email;
-            $user->user_group_id = $request->user_group_id;
+            $user->role_id = $request->role_id;
             $user->currency_id = $request->currency_id;
             $user->password  = Hash::make($request->password);
             $user->save();

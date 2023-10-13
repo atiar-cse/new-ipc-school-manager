@@ -29,7 +29,7 @@ class StoreSchoolRequest extends FormRequest
             'last_name' => 'required',
             'username' => 'required|alpha_dash|unique:users,username',
             'email' => 'required|email|unique:users,email',
-            'user_group_id' => 'required',
+            'role_id' => 'required',
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required|min:6',
             //schools
