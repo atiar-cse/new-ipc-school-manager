@@ -21,7 +21,7 @@ class StoreRoleRequest extends FormRequest
             'success'   => false,
             'message'   => 'Validation errors',
             'data'      => $validator->errors()
-        ]));
+        ], 422));
     }
 
 
