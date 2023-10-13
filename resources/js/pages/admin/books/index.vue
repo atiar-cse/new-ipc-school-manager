@@ -288,12 +288,16 @@ const deleteUser = id => {
 
             <!-- Actions -->
             <template #item.actions="{ item }">
-              <IconBtn @click="deleteUser(item.raw.id)">
-                <VIcon icon="tabler-trash" />
-              </IconBtn>
-
               <IconBtn :to="{ name: 'admin-books-edit-id', params: { id: item.raw.id } }">
                 <VIcon icon="tabler-edit" />
+              </IconBtn>
+
+              <IconBtn :to="{ name: 'admin-books-view-id', params: { id: item.raw.id } }">
+                <VIcon icon="tabler-eye" />
+              </IconBtn>
+
+              <IconBtn @click="deleteUser(item.raw.id)">
+                <VIcon icon="tabler-trash" />
               </IconBtn>
 
               <VBtn
@@ -309,19 +313,18 @@ const deleteUser = id => {
 
                 <VMenu activator="parent">
                   <VList>
-                    <!-- <VListItem :to="{ name: 'apps-user-view-id', params: { id: item.raw.id } }">
-                      <template #prepend>
-                        <VIcon icon="tabler-eye" />
-                      </template>
-
-                      <VListItemTitle>View</VListItemTitle>
-                    </VListItem> -->
-
                     <VListItem :to="{ name: 'admin-books-edit-id', params: { id: item.raw.id } }">
                       <template #prepend>
                         <VIcon icon="tabler-pencil" />
                       </template>
                       <VListItemTitle>Edit</VListItemTitle>
+                    </VListItem>
+
+                    <VListItem :to="{ name: 'admin-books-view-id', params: { id: item.raw.id } }">
+                      <template #prepend>
+                        <VIcon icon="tabler-eye" />
+                      </template>
+                      <VListItemTitle>View</VListItemTitle>
                     </VListItem>
 
                     <VListItem @click="deleteUser(item.raw.id)">

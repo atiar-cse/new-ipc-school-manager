@@ -41,8 +41,19 @@ bookListStore.fetchUser(Number(route.params.id)).then(response => {
       cols="12"
       md="3"
     >
-      <VCard class="mb-8">
+      <VCard class="mb-8">                
         <VCardText>
+          <!-- 👉 Download -->
+          <VBtn
+            block
+            variant="tonal"              
+            color="secondary"
+            class="mb-2"
+            prepend-icon="tabler-download"
+          >
+            Download Book
+          </VBtn>
+                    
           <!-- 👉 Back to List -->
           <VBtn
             block

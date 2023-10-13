@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 150)->unique();
             $table->foreignId('book_category_id')->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('thumbnail')->nullable();
             $table->string('file')->nullable();
             $table->tinyInteger('disabled')->default(0);

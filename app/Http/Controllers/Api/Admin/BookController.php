@@ -84,7 +84,8 @@ class BookController extends Controller
     }
     public function show(Book $book)
     {
-        return Book::where('id', $book->id)->with('category', 'groups', 'tags')->first();
+        // return Book::where('id', $book->id)->with('category', 'groups', 'tags')->first();
+        return $book->with('category', 'groups', 'tags')->first();
     }
     public function update(UpdateBookRequest $request, Book $book)
     {
