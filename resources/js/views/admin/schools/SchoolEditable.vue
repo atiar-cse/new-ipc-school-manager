@@ -3,7 +3,7 @@ import {
   requiredValidator,
 } from '@validators'
 import axios from '@axios'
-import { useBooksStore } from './useBooksStore'
+import { useSchoolsStore } from './useSchoolsStore'
 
 const props = defineProps({
   data: {
@@ -15,7 +15,7 @@ const router = useRouter()
 
 const refForm = ref()
 
-const bookListStore = useBooksStore()
+const schoolListStore = useSchoolsStore()
 
 // // 👉 Clients
 // const clients = ref([])
@@ -44,12 +44,12 @@ const onSubmit = () => {
       // })
 
       if(props.data.id){
-        bookListStore.updateUser(props.data) // Update
+        schoolListStore.updateUser(props.data) // Update
       } else {
-        bookListStore.addUser(props.data) // Add new
+        schoolListStore.addUser(props.data) // Add new
       }
       
-      router.replace('/admin/books')    
+      router.replace('/admin/schools')    
 
     }
   })
@@ -66,24 +66,24 @@ const onSubmit = () => {
         @submit.prevent="onSubmit"
       >
         <VRow>
-          <!-- 👉 Book Title -->
+          <!-- 👉 School Name -->
           <VCol cols="12">
             <AppTextField
               v-model="props.data.name"
               :rules="[requiredValidator]"
-              label="Book Title"
-              placeholder="Enter Book Title"
+              label="School Name"
+              placeholder="Enter School Name"
             />
           </VCol>
 
           <!-- 👉 Description -->
-          <VCol cols="12">
+          /* <VCol cols="12">
             <AppTextarea 
               v-model="props.data.description"
               label="Description" 
               placeholder="Enter Description"
             />
-          </VCol>
+          </VCol> */
 
           <!-- 👉 Submit and Reset -->
           <VCol cols="12">

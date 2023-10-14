@@ -1,15 +1,15 @@
 import { defineStore } from 'pinia'
 import axios from '@axios'
 
-export const useBooksStore = defineStore('BooksStore', {
+export const useSchoolsStore = defineStore('SchoolsStore', {
   actions: {
     // 👉 Fetch users data
-    fetchUsers(params) { return axios.get('/api/v1/admin/books', { params }) },
+    fetchUsers(params) { return axios.get('/api/v1/admin/schools', { params }) },
 
     // 👉 Add User
     addUser(userData) {
       return new Promise((resolve, reject) => {
-        axios.post('/api/v1/admin/books', userData) // {user: userData,}
+        axios.post('/api/v1/admin/schools', userData) // {user: userData,}
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -18,14 +18,14 @@ export const useBooksStore = defineStore('BooksStore', {
     // 👉 fetch single user
     fetchUser(id) {
       return new Promise((resolve, reject) => {
-        axios.get(`/api/v1/admin/books/${id}`).then(response => resolve(response)).catch(error => reject(error))
+        axios.get(`/api/v1/admin/schools/${id}`).then(response => resolve(response)).catch(error => reject(error))
       })
     },
 
     // 👉 Update User
     updateUser(userData) {
       return new Promise((resolve, reject) => {
-        axios.put(`/api/v1/admin/books/${userData.id}`, userData) // {user: userData,}
+        axios.put(`/api/v1/admin/schools/${userData.id}`, userData) // {user: userData,}
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -34,7 +34,7 @@ export const useBooksStore = defineStore('BooksStore', {
     // 👉 Delete User
     deleteUser(id) {
       return new Promise((resolve, reject) => {
-        axios.delete(`/api/v1/admin/books/${id}`).then(response => resolve(response)).catch(error => reject(error))
+        axios.delete(`/api/v1/admin/schools/${id}`).then(response => resolve(response)).catch(error => reject(error))
       })
     },
   },

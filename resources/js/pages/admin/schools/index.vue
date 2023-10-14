@@ -2,10 +2,10 @@
 import { VDataTableServer } from 'vuetify/labs/VDataTable'
 import { paginationMeta } from '@/@paginate/utils'
 // import AddNewUserDrawer from '@/views/apps/user/list/AddNewUserDrawer.vue'
-import { useBooksStore } from '@/views/admin/books/useBooksStore'
+import { useSchoolsStore } from '@/views/admin/schools/useSchoolsStore'
 import { avatarText } from '@core/utils/formatters'
 
-const bookListStore = useBooksStore()
+const schoolListStore = useSchoolsStore()
 const searchQuery = ref('')
 const selectedRole = ref()
 const selectedPlan = ref()
@@ -32,18 +32,7 @@ const headers = [
     title: 'Name',
     key: 'name',
   },  
-  {
-    title: 'Category',
-    key: 'book_category_id',
-  },  
-  {
-    title: 'Description',
-    key: 'description',
-  },   
-  {
-    title: 'Status',
-    key: 'status',
-  },
+    
   {
     title: 'created at',
     key: 'created_at',
@@ -57,7 +46,7 @@ const headers = [
 
 // 👉 Fetching users
 const fetchUsers = () => {
-  bookListStore.fetchUsers({
+  schoolListStore.fetchUsers({
     q: searchQuery.value,
     status: selectedStatus.value,
     plan: selectedPlan.value,
@@ -202,9 +191,9 @@ const deleteUser = id => {
               <!-- 👉 Add book button -->
               <VBtn
                 prepend-icon="tabler-plus"
-                :to="{ name: 'admin-books-add' }"
+                :to="{ name: 'admin-schools-add' }"
               >
-                Add New Book
+                Add New School
               </VBtn>
             </div>
           </VCardText>
@@ -292,7 +281,7 @@ const deleteUser = id => {
                 <VIcon icon="tabler-trash" />
               </IconBtn>
 
-              <IconBtn :to="{ name: 'admin-books-edit-id', params: { id: item.raw.id } }">
+              <IconBtn :to="{ name: 'admin-schools-edit-id', params: { id: item.raw.id } }">
                 <VIcon icon="tabler-edit" />
               </IconBtn>
 
@@ -317,7 +306,7 @@ const deleteUser = id => {
                       <VListItemTitle>View</VListItemTitle>
                     </VListItem> -->
 
-                    <VListItem :to="{ name: 'admin-books-edit-id', params: { id: item.raw.id } }">
+                    <VListItem :to="{ name: 'admin-schools-edit-id', params: { id: item.raw.id } }">
                       <template #prepend>
                         <VIcon icon="tabler-pencil" />
                       </template>
