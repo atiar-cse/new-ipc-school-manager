@@ -1,4 +1,5 @@
 <script setup>
+import { formatDate } from '@core/utils/formatters'
 // Store
 import { useBooksStore } from '@/views/admin/books/useBooksStore'
 
@@ -13,6 +14,13 @@ bookListStore.fetchUser(Number(route.params.id)).then(response => {
 }).catch(error => {
   console.log(error)
 })
+
+const resolveStatusVariant = stat => {  
+  if (stat == 1)
+    return 'secondary'
+  
+  return 'success'
+}
 </script>
 
 <template>
@@ -83,7 +91,15 @@ bookListStore.fetchUser(Number(route.params.id)).then(response => {
                     </td>
                     <td>
                       <p class="mb-2">
-                        {{ bookData.status }}
+                        <VChip
+                          :color="resolveStatusVariant(bookData.disabled)"
+                          size="small"
+                          label
+                          class="text-capitalize"
+                        >
+                          <span v-if="bookData.disabled==1">Disabled</span>
+                          <span v-else>Enabled</span>
+                        </VChip>
                       </p>
                     </td>
                   </tr>
@@ -96,7 +112,7 @@ bookListStore.fetchUser(Number(route.params.id)).then(response => {
                     </td>
                     <td>
                       <p class="mb-2">
-                        2021-07-14 to 2021-07-30
+                        {{ formatDate(bookData.created_at) }}
                       </p>
                     </td>
                   </tr>
@@ -109,7 +125,7 @@ bookListStore.fetchUser(Number(route.params.id)).then(response => {
                     </td>
                     <td>
                       <p class="mb-2">
-                        2021-07-14 to 2021-07-30
+                        {{ formatDate(bookData.updated_at) }}
                       </p>
                     </td>
                   </tr>  
@@ -122,23 +138,23 @@ bookListStore.fetchUser(Number(route.params.id)).then(response => {
                     </td>
                     <td>
                       <p class="mb-2">
-                        2021-07-14 to 2021-07-30
+                        {{ formatDate(bookData.deleted_at) }}
                       </p>
                     </td>
                   </tr>                                  
                 </table>
               </VCol>
 
+              <!-- Thumbnail -->
               <VCol
                 cols="12"
                 md="5"
               >
                 <div class="border rounded pa-4 pb-0">
-                  <!-- <VImg
-                    width="178"
-                    :src="standingGirlImg"
+                  <VImg                    
+                    :src="'/storage/images/books/thumbnail/'+bookData.thumbnail"
                     class="mx-auto"
-                  /> -->
+                  />
                 </div>
               </VCol>
             </VRow>
@@ -171,6 +187,9 @@ bookListStore.fetchUser(Number(route.params.id)).then(response => {
               color="secondary"
               class="mb-2"
               prepend-icon="tabler-download"
+              :href="'/storage/images/books/'+bookData.file"
+              target="_blank"
+              rel="noopener noreferrer"              
             >
               Download Book
             </VBtn>

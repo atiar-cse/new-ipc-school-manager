@@ -2,9 +2,9 @@ import admin from './admin'
 
 export default [
   {
-    title: 'Home',
+    title: 'Dashboard',
     to: { name: 'index' },
-    icon: { icon: 'tabler-smart-home' },
+    icon: { icon: 'tabler-dashboard' },
   },
   {
     title: 'Second page',
@@ -14,7 +14,7 @@ export default [
   {
     title: 'Schools',
     to: { name: 'schools' },
-    icon: { icon: 'tabler-smart-home' },
+    icon: { icon: 'tabler-school' },
   },
   ...admin
 ]

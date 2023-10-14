@@ -7,32 +7,32 @@ export default [
     },  
     {
       title: 'Schools',
-      icon: { icon: 'tabler-home' },
+      icon: { icon: 'tabler-school' },
       to: 'admin-schools', // dash means slash in url address bar
     },  
     {
       title: 'Categories',
-      icon: { icon: 'tabler-home' },
+      icon: { icon: 'tabler-tag' },
       to: 'admin-categories', // dash means slash in url address bar
     },  
     {
       title: 'Parents',
-      icon: { icon: 'tabler-home' },
+      icon: { icon: 'tabler-app-window' },
       to: 'admin-parents', // dash means slash in url address bar
     }, 
     {
       title: 'Administrators',
-      icon: { icon: 'tabler-home' },
+      icon: { icon: 'tabler-users' },
       to: 'admin-administrators', // dash means slash in url address bar
     }, 
     {
       title: 'Settings',
-      icon: { icon: 'tabler-home' },
+      icon: { icon: 'tabler-settings' },
       to: 'admin-settings', // dash means slash in url address bar
     },
     {
       title: 'Billing',
-      icon: { icon: 'tabler-home' },
+      icon: { icon: 'tabler-currency-dollar' },
       to: 'admin-billing', // dash means slash in url address bar
     },
      

@@ -13,7 +13,7 @@ class Book extends Model
     use SoftDeletes;
     protected $dates = ['deleted_at'];
     protected $fillable = [
-        'name', 'book_category_id', 'description', 'file', 'image', 'disabled'
+        'name', 'book_category_id', 'description', 'thumbnail', 'file', 'disabled'
     ];
 
     public function category(): BelongsTo

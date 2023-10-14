@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Admin\Book;
 use App\Models\Admin\Tag;
 use App\Http\Requests\Admin\StoreBookRequest;
@@ -11,12 +12,23 @@ use App\Services\ImageUploaderService;
 use Exception;
 use DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Book::paginate();
+        $query       = $request->get('q');
+        $status      = intval($request->get('status'));
+
+        return Book::with('category')
+            ->when($request->filled('status'), function ($qry) use ($status) {
+                $qry->where('disabled', $status);
+            })
+            ->when(!empty($query), function ($qry) use ($query) {
+                $qry->where('name', 'like', '%' . $query . '%');
+            })
+            ->paginate();
     }
     public function store(StoreBookRequest $request)
     {
@@ -27,6 +39,17 @@ class BookController extends Controller
                 $uploadedImage = $request->file('book_image');
                 $imagePath = ImageUploaderService::upload($uploadedImage, 'images/books/thumbnail');
                 $request->merge(['thumbnail' => $imagePath]);
+            } else if ($request->filled('book_image')) {
+                //handle base64 encoded images here 
+                $base64image = $request['book_image'];
+                @list($type, $file_data) = explode(';', $base64image);
+                @list(, $file_data) = explode(',', $file_data);
+                $type = explode(";", explode("/", $base64image)[1])[0];
+                $name = time() . uniqid() . '.' . $type;
+                $path = 'images/books/thumbnail/' . $name;
+                Storage::disk('public')->put($path, base64_decode($file_data));
+
+                $request->merge(['thumbnail' => $name]);
             }
 
             if ($request->hasFile('book_file')) {
@@ -78,14 +101,14 @@ class BookController extends Controller
             return response()->json([
                 'success'   => false,
                 'message'   =>  $e->getMessage(),
-                'data'      => $book
+                // 'data'      => $book
             ], 500);
         }
     }
     public function show(Book $book)
     {
-        // return Book::where('id', $book->id)->with('category', 'groups', 'tags')->first();
-        return $book->with('category', 'groups', 'tags')->first();
+        return Book::where('id', $book->id)->with('category', 'groups', 'tags')->first();
+        // return $book->with('category', 'groups', 'tags')->first();
     }
     public function update(UpdateBookRequest $request, Book $book)
     {

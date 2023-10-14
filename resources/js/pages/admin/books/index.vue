@@ -3,12 +3,12 @@ import { VDataTableServer } from 'vuetify/labs/VDataTable'
 import { paginationMeta } from '@/@paginate/utils'
 // import AddNewUserDrawer from '@/views/apps/user/list/AddNewUserDrawer.vue'
 import { useBooksStore } from '@/views/admin/books/useBooksStore'
-import { avatarText } from '@core/utils/formatters'
+import { formatDate } from '@core/utils/formatters'
 
 const bookListStore = useBooksStore()
 const searchQuery = ref('')
-const selectedRole = ref()
-const selectedPlan = ref()
+const selectedCategoryIds = ref()
+const selectedTagIds = ref()
 const selectedStatus = ref()
 const totalPage = ref(1)
 const totalUsers = ref(0)
@@ -29,16 +29,20 @@ const headers = [
     key: 'id',
   },
   {
-    title: 'Name',
+    title: 'Book Title',
     key: 'name',
   },  
   {
     title: 'Category',
-    key: 'book_category_id',
+    key: 'category',
   },  
   {
-    title: 'Description',
-    key: 'description',
+    title: 'Thumbnail',
+    key: 'thumbnail',
+  },
+  {
+    title: 'File',
+    key: 'file',
   },   
   {
     title: 'Status',
@@ -60,8 +64,8 @@ const fetchUsers = () => {
   bookListStore.fetchUsers({
     q: searchQuery.value,
     status: selectedStatus.value,
-    plan: selectedPlan.value,
-    role: selectedRole.value,
+    category_ids: selectedCategoryIds.value,
+    tag_ids: selectedTagIds.value,
     options: options.value,
   }).then(response => {
 
@@ -80,72 +84,29 @@ watchEffect(fetchUsers)
 
 const status = [
   {
-    title: 'Pending',
-    value: 'pending',
+    title: 'Enabled',
+    value: 0,
   },
   {
-    title: 'Active',
-    value: 'active',
-  },
-  {
-    title: 'Inactive',
-    value: 'inactive',
+    title: 'Disabled',
+    value: 1,
   },
 ]
 
-// const resolveUserRoleVariant = role => {
-//   const roleLowerCase = role.toLowerCase()
-//   if (roleLowerCase === 'subscriber')
-//     return {
-//       color: 'warning',
-//       icon: 'tabler-circle-check',
-//     }
-//   if (roleLowerCase === 'author')
-//     return {
-//       color: 'success',
-//       icon: 'tabler-user',
-//     }
-//   if (roleLowerCase === 'maintainer')
-//     return {
-//       color: 'primary',
-//       icon: 'tabler-chart-pie-2',
-//     }
-//   if (roleLowerCase === 'editor')
-//     return {
-//       color: 'info',
-//       icon: 'tabler-edit',
-//     }
-//   if (roleLowerCase === 'admin')
-//     return {
-//       color: 'secondary',
-//       icon: 'tabler-device-laptop',
-//     }
+const resolveStatusVariant = stat => {  
+  if (stat == 1)
+    return 'secondary'
   
-//   return {
-//     color: 'primary',
-//     icon: 'tabler-user',
-//   }
+  return 'success'
+}
+
+
+// const addNewUser = userData => {
+//   bookListStore.addUser(userData)
+
+//   // refetch User
+//   fetchUsers()
 // }
-
-const resolveUserStatusVariant = stat => {
-  // const statLowerCase = stat.toLowerCase()
-  // if (statLowerCase === 'pending')
-  //   return 'warning'
-  // if (statLowerCase === 'active')
-  //   return 'success'
-  // if (statLowerCase === 'inactive')
-  //   return 'secondary'
-  
-  return 'primary'
-}
-
-
-const addNewUser = userData => {
-  bookListStore.addUser(userData)
-
-  // refetch User
-  fetchUsers()
-}
 
 const deleteUser = id => {
   bookListStore.deleteUser(id)
@@ -161,7 +122,51 @@ const deleteUser = id => {
       <VCol cols="12">
         <VCard title="All Books">
           <!-- 👉 Filters -->
-          <!-- <VDivider /> -->
+          <VCardText>
+            <VRow>
+              <!-- 👉 Select Category -->
+              <VCol
+                cols="12"
+                sm="4"
+              >
+                <AppSelect
+                  v-model="selectedRole"
+                  label="Select Category"
+                  :items="roles"
+                  clearable
+                  clear-icon="tabler-x"
+                />
+              </VCol>
+              <!-- 👉 Select Tags -->
+              <VCol
+                cols="12"
+                sm="4"
+              >
+                <AppSelect
+                  v-model="selectedPlan"
+                  label="Select Tags"
+                  :items="plans"
+                  clearable
+                  clear-icon="tabler-x"
+                />
+              </VCol>
+              <!-- 👉 Select Status -->
+              <VCol
+                cols="12"
+                sm="4"
+              >
+                <AppSelect
+                  v-model="selectedStatus"
+                  label="Select Status"
+                  :items="status"
+                  clearable
+                  clear-icon="tabler-x"
+                />
+              </VCol>
+            </VRow>
+          </VCardText>
+
+          <VDivider />
 
           <VCardText class="d-flex flex-wrap py-4 gap-4">
             <div class="me-3 d-flex gap-3">
@@ -221,69 +226,80 @@ const deleteUser = id => {
             class="text-no-wrap"
             @update:options="options = $event"
           >
-            <!-- User -->
-            <!-- <template #item.user="{ item }">
-              <div class="d-flex align-center">
-                <VAvatar
-                  size="34"
-                  :variant="!item.raw.avatar ? 'tonal' : undefined"
-                  :color="!item.raw.avatar ? resolveUserRoleVariant(item.raw.role).color : undefined"
-                  class="me-3"
-                >
-                  <VImg
-                    v-if="item.raw.avatar"
-                    :src="item.raw.avatar"
-                  />
-                  <span v-else>{{ avatarText(item.raw.fullName) }}</span>
-                </VAvatar>
+            <!-- id -->
+            <template #item.name="{ item }">
+              <RouterLink :to="{ name: 'admin-books-view-id', params: { id: item.raw.id } }">
+                {{ item.raw.name }}
+              </RouterLink>
+            </template>
 
-                <div class="d-flex flex-column">
-                  <h6 class="text-base">
-                    <RouterLink
-                      :to="{ name: 'apps-user-view-id', params: { id: item.raw.id } }"
-                      class="font-weight-medium user-list-name"
+            <!-- Category -->
+            <template #item.category="{ item }">
+              {{ item.raw.category.name }}
+            </template>
+
+            <!-- Thumbnail -->
+            <template #item.thumbnail="{ item }">
+              <div class="">                
+                <VTooltip>
+                  <template #activator="{ props }">
+                    <VAvatar
+                      :size="38"
+                      v-bind="props"
+                      variant="tonal"
+                      class="me-3"
                     >
-                      {{ item.raw.fullName }}
-                    </RouterLink>
-                  </h6>
+                      <VImg
+                        v-if="item.raw.thumbnail"
+                        :src="'/storage/images/books/thumbnail/'+item.raw.thumbnail"
+                      />
+                      <span v-else></span>
+                    </VAvatar>
+                  </template>
 
-                  <span class="text-sm text-medium-emphasis">@{{ item.raw.email }}</span>
-                </div>
-              </div>
-            </template> -->
+                  <VAvatar
+                    size="170"
+                    :variant="!item.raw.thumbnail ? 'tonal' : undefined"
+                    class="me-3"
+                  >
+                    <VImg
+                      v-if="item.raw.thumbnail"
+                      :src="'/storage/images/books/thumbnail/'+item.raw.thumbnail"
+                    />
+                    <span v-else>Not Found</span>
+                  </VAvatar>                  
+                </VTooltip>                               
+              </div>              
+            </template>
 
-            <!-- 👉 Role -->
-            <!-- <template #item.role="{ item }">
-              <div class="d-flex align-center gap-4">
-                <VAvatar
-                  :size="30"
-                  :color="resolveUserRoleVariant(item.raw.role).color"
-                  variant="tonal"
-                >
-                  <VIcon
-                    :size="20"
-                    :icon="resolveUserRoleVariant(item.raw.role).icon"
-                  />
-                </VAvatar>
-                <span class="text-capitalize">{{ item.raw.role }}</span>
-              </div>
-            </template> -->
-
-            <!-- Plan -->
-            <!-- <template #item.plan="{ item }">
-              <span class="text-capitalize font-weight-medium">{{ item.raw.currentPlan }}</span>
-            </template> -->
+            <!-- File -->
+            <template #item.file="{ item }">
+              <IconBtn 
+                v-if="item.raw.file"
+                :href="'/storage/images/books/'+item.raw.file"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <VIcon icon="tabler-download" />
+              </IconBtn>              
+            </template>
 
             <!-- Status -->
             <template #item.status="{ item }">
               <VChip
-                :color="resolveUserStatusVariant(item.raw.status)"
+                :color="resolveStatusVariant(item.raw.disabled)"
                 size="small"
                 label
                 class="text-capitalize"
               >
-                {{ item.raw.disabled }}
+                <span v-if="item.raw.disabled==1">Disabled</span>
+                <span v-else>Enabled</span>
               </VChip>
+            </template>
+
+            <!-- Created At -->
+            <template #item.created_at="{ item }">
+              {{ formatDate(item.raw.created_at) }}
             </template>
 
             <!-- Actions -->
