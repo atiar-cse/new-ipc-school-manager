@@ -68,3 +68,9 @@ Route::prefix('/v1')->group(function () {
         Route::apiResource('/users', UserController::class);
     });
 });
+
+Route::get('/clear-cache-all', function () {
+    Artisan::call('cache:clear');
+    Artisan::call("config:cache");
+    die('Cache Cleared All');
+});
