@@ -5,6 +5,9 @@ import { useThemeConfig } from '@core/composable/useThemeConfig'
 // Components
 import Footer from '@/layouts/components/Footer.vue'
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
+// import NavSearchBar from '@/layouts/components/NavSearchBar.vue'
+import NavbarShortcuts from '@/layouts/components/NavbarShortcuts.vue'
+import NavBarNotifications from '@/layouts/components/NavBarNotifications.vue'
 import UserProfile from '@/layouts/components/UserProfile.vue'
 
 // @layouts plugin
@@ -30,11 +33,15 @@ const { width: windowWidth } = useWindowSize()
             icon="tabler-menu-2"
           />
         </IconBtn>
-
+        
+        <!-- <NavSearchBar class="ms-lg-n3" /> -->
         <NavbarThemeSwitcher />
-
+        
         <VSpacer />
 
+        <!-- <NavbarThemeSwitcher /> -->
+        <NavbarShortcuts class="me-1" />
+        <NavBarNotifications class="me-2" />
         <UserProfile />
       </div>
     </template>
