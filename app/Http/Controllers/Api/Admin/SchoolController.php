@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\School;
-use App\Models\User;
+use App\Models\Admin\User;
 use App\Http\Requests\Admin\StoreSchoolRequest;
 use App\Http\Requests\Admin\UpdateSchoolRequest;
 use App\Models\Admin\Address;
