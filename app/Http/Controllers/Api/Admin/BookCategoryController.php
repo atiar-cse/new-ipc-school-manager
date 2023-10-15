@@ -7,6 +7,7 @@ use App\Models\Admin\BookCategory;
 use App\Http\Requests\Admin\StoreBookCategoryRequest;
 use App\Http\Requests\Admin\UpdateBookCategoryRequest;
 use App\Services\ImageUploaderService;
+use DB;
 
 class BookCategoryController extends Controller
 {
@@ -59,5 +60,15 @@ class BookCategoryController extends Controller
             'message'   => 'Book category has been deleted successfully',
             'data'      => $category
         ], 200);
+    }
+
+    // Get Category Dropdown Option List
+    public function getCategoryDropdownList()
+    {
+        $results = DB::table('book_categories')
+            ->selectRaw('name AS title, id AS value')
+            ->get();
+
+        return $results;
     }
 }

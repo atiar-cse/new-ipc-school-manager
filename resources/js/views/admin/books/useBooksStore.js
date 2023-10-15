@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import axios from '@axios'
 
 export const useBooksStore = defineStore('BooksStore', {
-  actions: {
+  actions: {    
     // 👉 Fetch users data
     fetchUsers(params) { return axios.get('/api/v1/admin/books', { params }) },
 
@@ -37,5 +37,8 @@ export const useBooksStore = defineStore('BooksStore', {
         axios.delete(`/api/v1/admin/books/${id}`).then(response => resolve(response)).catch(error => reject(error))
       })
     },
+
+    // 👉 Fetch Category List
+    fetchCategoryList(params) { return axios.get('/api/v1/admin/books/category-dropdown-list', { params }) },    
   },
 })

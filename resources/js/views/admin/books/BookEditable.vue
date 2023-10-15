@@ -19,15 +19,15 @@ const refInputEl = ref()
 
 const bookDataLocal = ref(structuredClone(toRaw(props.data)))
 
-// // 👉 Clients
-// const clients = ref([])
+// 👉 Category List
+const category_list = ref([])
 
-// // 👉 fetchClients
-// bookListStore.fetchClients().then(response => {
-//   clients.value = response.data
-// }).catch(err => {
-//   console.log(err)
-// })
+// 👉 fetchCategoryList
+bookListStore.fetchCategoryList().then(response => {
+  category_list.value = response.data
+}).catch(err => {
+  console.log(err)
+})
 
 // Add or Update
 const onSubmit = () => {
@@ -64,6 +64,31 @@ const onSubmit = () => {
     }
   })
 }
+
+// const selectedOption = ref('book_category_id')
+
+// const category_list = [
+//   {
+//     title: 'Florida',
+//     value: 'FL',
+//   },
+//   {
+//     title: 'Georgia',
+//     value: 'GA',
+//   },
+//   {
+//     title: 'Nebraska',
+//     value: 'NE',
+//   },
+//   {
+//     title: 'California',
+//     value: 'CA',
+//   },
+//   {
+//     title: 'New York',
+//     value: 'NY',
+//   },
+// ]
 
 const resetForm = () => {
   bookDataLocal.value = structuredClone(toRaw(props.data))
@@ -115,6 +140,17 @@ const resetAvatar = () => {
               placeholder="Enter Description"
             />
           </VCol>
+
+          <!-- 👉 Category -->
+          <VCol cols="12">
+            <AppSelect
+              v-model="bookDataLocal.book_category_id"
+              :items="category_list"
+              label="Select Category"
+              clearable
+              clear-icon="tabler-x"
+            />
+          </VCol>          
 
           <!-- 👉 Thumbnail -->
           <VCol cols="12">
