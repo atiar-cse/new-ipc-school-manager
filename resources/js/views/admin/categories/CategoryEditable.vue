@@ -66,7 +66,7 @@ const onSubmit = () => {
         @submit.prevent="onSubmit"
       >
         <VRow>
-          <!-- 👉 School Name -->
+          <!-- 👉 Category Name -->
           <VCol cols="12">
             <AppTextField
               v-model="props.data.name"
@@ -76,14 +76,16 @@ const onSubmit = () => {
             />
           </VCol>
 
-          <!-- 👉 Description -->
-          /* <VCol cols="12">
-            <AppTextarea 
-              v-model="props.data.description"
-              label="Description" 
-              placeholder="Enter Description"
+          <!-- 👉 Category Position -->
+          <VCol cols="12">
+            <AppTextField
+              v-model="props.data.position"
+              :rules="[requiredValidator]"
+              label="Category Position"
+              placeholder="Enter Category Position"
             />
-          </VCol> */
+          </VCol>
+
 
           <!-- 👉 Submit and Reset -->
           <VCol cols="12">
