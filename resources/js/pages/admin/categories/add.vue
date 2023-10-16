@@ -12,7 +12,7 @@ const categoryData = ref({
   name: '',
   position: '',
   is_feature: 'no',
-  icon: '',
+  //icon: '',
   //description: '',
 })
 </script>

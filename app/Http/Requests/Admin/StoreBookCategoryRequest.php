@@ -25,7 +25,7 @@ class StoreBookCategoryRequest extends FormRequest
         return [
             'name' => 'required|unique:book_categories,name',
             'position' => 'required',
-            'icon_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            //'icon_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 }
