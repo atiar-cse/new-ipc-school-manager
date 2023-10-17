@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PasswordReset;
-use App\Models\User;
+use App\Models\Admin\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Carbon;
@@ -48,8 +48,7 @@ class ResetPasswordController extends Controller
             'token' => $request->code,
         ])->first();
 
-        if ( !$token ) 
-        {
+        if (!$token) {
             return response()->json([
                 'success' => false,
                 'message' => 'Password code is Wrong!',
@@ -93,8 +92,7 @@ class ResetPasswordController extends Controller
     public function setCode(Request $request)
     {
         $user = User::where('email', $request->email)->first();
-        if ( $user && ($request->email === $user->email) ) 
-        {
+        if ($user && ($request->email === $user->email)) {
             PasswordReset::where(['email' => $user->email])->delete();
             $newToken = Str::random(6);
             $token = new PasswordReset();
@@ -104,7 +102,7 @@ class ResetPasswordController extends Controller
             $token->save();
 
             Mail::to($user->email)
-            ->send(new ResetPassword($newToken));
+                ->send(new ResetPassword($newToken));
 
             return response()->json([
                 'user' => $user,

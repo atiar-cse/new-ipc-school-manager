@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Admin\User;
 // use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -62,15 +62,14 @@ class LoginController extends Controller
                 $token->token = hash('sha256', $newToken);
                 $token->save();
                 $accessToken = $newToken;
-            } 
-            else {
+            } else {
                 $accessToken = $user->createToken('ApiTokenBearer')->plainTextToken;
             }
 
             $userAbilities = [
                 'action' => 'manage',
                 'subject' => 'all',
-            ];  
+            ];
 
             return response()->json([
                 'success' => true,

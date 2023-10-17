@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Admin\BookCategoryController;
 use App\Http\Controllers\Api\Admin\BookController;
 use App\Http\Controllers\Api\Admin\RoleController;
 use App\Http\Controllers\Api\Admin\UserController;
+use App\Http\Controllers\Api\SchoolManager\TeacherController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -66,6 +67,12 @@ Route::prefix('/v1')->group(function () {
     });
     Route::prefix('/admin')->group(function () {
         Route::apiResource('/users', UserController::class);
+    });
+
+
+    //School Manager
+    Route::prefix('/school-admin')->group(function () {
+        Route::apiResource('/teachers', TeacherController::class);
     });
 });
 

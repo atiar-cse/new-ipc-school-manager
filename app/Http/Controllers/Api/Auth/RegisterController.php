@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Admin\User;
 use Laravel\Cashier\Order\Order;
 use App\Models\PricePlan;
 use App\Models\Student;
@@ -56,7 +56,7 @@ final class RegisterController extends Controller
             'status' => StatusEnum::PENDING,
         ]);
 
-        $lastName = !empty($request->last_name) ? ' '. $request->last_name .'-'. $user->id: '';
+        $lastName = !empty($request->last_name) ? ' ' . $request->last_name . '-' . $user->id : '';
         $slug = str()->slug($request->first_name . $lastName);
 
         $studentData = [
@@ -130,15 +130,14 @@ final class RegisterController extends Controller
     public function saveUserAndOrder(Request $request)
     {
         $user_id = trim($request->user_id);
-        if( !empty($user_id) )
-        {
+        if (!empty($user_id)) {
             $user = User::find($user_id);
             $student = Student::where('user_id', $user_id)->first();
             $package = PricePlan::find(intval($request->price_plan_id));
             $amt = !empty($package->amount) ? $package->amount : 0.00;
             $start_at = \Carbon\Carbon::now()->toDateString();
             $end_at = \Carbon\Carbon::now()->addMonths($package->duration)->toDateString();
-        
+
             $order = OrderBilling::create([
                 "user_id" => $user_id,
                 'price_plan_id' => $request->price_plan_id,
@@ -174,9 +173,7 @@ final class RegisterController extends Controller
                     'package' => $package,
                 ],
             ]);
-        }
-        else 
-        {
+        } else {
             return response()->json([
                 'success' => false,
             ]);
