@@ -11,9 +11,15 @@ use Auth;
 
 class TeacherController extends Controller
 {
+    protected $user_id;
+    public function __construct()
+    {
+        $this->user_id = 1; //Auth::user()->school->school_id;
+    }
+
     public function index()
     {
-        return Teacher::paginate();
+        return Teacher::where('school_id', $this->user_id)->paginate();
     }
     public function store(StoreTeacherRequest $request)
     {
@@ -22,8 +28,8 @@ class TeacherController extends Controller
             $imagePath = ImageUploaderService::upload($uploadedImage, 'images/teachers');
             $request->merge(['image' => $imagePath]);
         }
-        $user_id = 1; //Auth::user()->school->school_id;
-        $request->merge(['school_id' => $user_id]);
+
+        $request->merge(['school_id' => $this->user_id]);
 
         $teacher = Teacher::create($request->all());
 
@@ -36,7 +42,7 @@ class TeacherController extends Controller
 
     public function show(Teacher $teacher)
     {
-        return $teacher;
+        return $teacher->where('school_id', $this->user_id)->first();
     }
 
     public function update(UpdateTeacherRequest $request, Teacher $teacher)

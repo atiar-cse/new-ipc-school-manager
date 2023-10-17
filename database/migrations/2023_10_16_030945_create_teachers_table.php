@@ -36,7 +36,7 @@ return new class extends Migration
             $table->string('socail_security', 20);
             $table->integer('loan')->default(0);
             $table->integer('bonus')->default(0);
-            $table->string('advance')->default(0);
+            $table->integer('advance')->default(0);
             $table->integer('gross_salary')->default(0);
             $table->integer('net_salary')->default(0);
             $table->timestamps();
