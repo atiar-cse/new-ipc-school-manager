@@ -10,7 +10,7 @@ const bookData = ref({
   // },
   id: '',
   name: '',
-  book_category_id: 1,
+  book_category_id: '',
   book_image: '',
   book_file: '',
   description: '',

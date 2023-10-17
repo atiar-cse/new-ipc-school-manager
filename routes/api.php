@@ -58,6 +58,7 @@ Route::prefix('/v1')->group(function () {
     });
     Route::prefix('/admin')->group(function () {
         Route::apiResource('/books/category', BookCategoryController::class);
+        Route::get('/books/category-dropdown-list', [BookCategoryController::class, 'getCategoryDropdownList']);
     });
     Route::prefix('/admin')->group(function () {
         Route::apiResource('/books', BookController::class);

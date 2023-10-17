@@ -27,6 +27,18 @@ const categoriesListStore = useCategoriesStore()
 //   console.log(err)
 // })
 
+// const selectedOption = ref('book_category_id')
+ const is_feature = [
+  {
+     title: 'Yes',
+     value: 'yes',
+  },
+  {     title: 'No',
+        value: 'no',
+  },
+  
+]
+
 // Add or Update
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -66,7 +78,7 @@ const onSubmit = () => {
         @submit.prevent="onSubmit"
       >
         <VRow>
-          <!-- 👉 School Name -->
+          <!-- 👉 Category Name -->
           <VCol cols="12">
             <AppTextField
               v-model="props.data.name"
@@ -76,14 +88,27 @@ const onSubmit = () => {
             />
           </VCol>
 
-          <!-- 👉 Description -->
-          /* <VCol cols="12">
-            <AppTextarea 
-              v-model="props.data.description"
-              label="Description" 
-              placeholder="Enter Description"
+          <!-- 👉 Category Position -->
+          <VCol cols="12">
+            <AppTextField
+              v-model="props.data.position"
+              :rules="[requiredValidator]"
+              label="Category Position"
+              placeholder="Enter Category Position"
             />
-          </VCol> */
+          </VCol>
+
+          <!-- 👉 Category is feature -->
+          <VCol cols="12">
+            <AppSelect
+              v-model="props.data.is_feature"
+              :items="is_feature"
+              label="Is_Feature"
+              clearable
+              clear-icon="tabler-x"
+            />
+          </VCol>
+
 
           <!-- 👉 Submit and Reset -->
           <VCol cols="12">

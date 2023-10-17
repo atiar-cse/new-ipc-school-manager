@@ -8,9 +8,11 @@ const categoryData = ref({
   //   book_category_id: '1',
   //   description: '',
   // },
-  //id: '',
-  //name: '',
-  //book_category_id: 1,
+  id: '',
+  name: '',
+  position: '',
+  is_feature: '',
+  //icon: '',
   //description: '',
 })
 </script>

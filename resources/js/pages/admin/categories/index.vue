@@ -31,12 +31,16 @@ const headers = [
   {
     title: 'Name',
     key: 'name',
-  },  
-    
+  }, 
   {
-    title: 'created at',
-    key: 'created_at',
+    title: 'Position',
+    key: 'position',
+  }, 
+  {
+    title: 'Is_Feature',
+    key: 'is_feature',
   },  
+     
   {
     title: 'Actions',
     key: 'actions',
@@ -130,14 +134,14 @@ const resolveUserStatusVariant = stat => {
 
 
 const addNewUser = userData => {
-  bookListStore.addUser(userData)
+  categoryListStore.addUser(userData)
 
   // refetch User
   fetchUsers()
 }
 
 const deleteUser = id => {
-  bookListStore.deleteUser(id)
+  categoryListStore.deleteUser(id)
 
   // refetch User
   fetchUsers()
@@ -191,9 +195,9 @@ const deleteUser = id => {
               <!-- 👉 Add book button -->
               <VBtn
                 prepend-icon="tabler-plus"
-                :to="{ name: 'admin-schools-add' }"
+                :to="{ name: 'admin-categories-add' }"
               >
-                Add New School
+                Add New Category
               </VBtn>
             </div>
           </VCardText>
@@ -281,7 +285,7 @@ const deleteUser = id => {
                 <VIcon icon="tabler-trash" />
               </IconBtn>
 
-              <IconBtn :to="{ name: 'admin-schools-edit-id', params: { id: item.raw.id } }">
+              <IconBtn :to="{ name: 'admin-categories-edit-id', params: { id: item.raw.id } }">
                 <VIcon icon="tabler-edit" />
               </IconBtn>
 
@@ -306,7 +310,7 @@ const deleteUser = id => {
                       <VListItemTitle>View</VListItemTitle>
                     </VListItem> -->
 
-                    <VListItem :to="{ name: 'admin-schools-edit-id', params: { id: item.raw.id } }">
+                    <VListItem :to="{ name: 'admin-categories-edit-id', params: { id: item.raw.id } }">
                       <template #prepend>
                         <VIcon icon="tabler-pencil" />
                       </template>
