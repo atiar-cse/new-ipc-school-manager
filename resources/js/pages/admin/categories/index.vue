@@ -31,12 +31,16 @@ const headers = [
   {
     title: 'Name',
     key: 'name',
-  },  
-    
+  }, 
   {
-    title: 'created at',
-    key: 'created_at',
+    title: 'Position',
+    key: 'position',
+  }, 
+  {
+    title: 'Is_Feature',
+    key: 'is_feature',
   },  
+     
   {
     title: 'Actions',
     key: 'actions',

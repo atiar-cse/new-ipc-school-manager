@@ -11,7 +11,7 @@ const categoryData = ref({
   id: '',
   name: '',
   position: '',
-  is_feature: 'no',
+  is_feature: '',
   //icon: '',
   //description: '',
 })

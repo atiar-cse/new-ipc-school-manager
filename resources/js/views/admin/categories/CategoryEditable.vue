@@ -27,6 +27,18 @@ const categoriesListStore = useCategoriesStore()
 //   console.log(err)
 // })
 
+// const selectedOption = ref('book_category_id')
+ const is_feature = [
+  {
+     title: 'Yes',
+     value: 'yes',
+  },
+  {     title: 'No',
+        value: 'no',
+  },
+  
+]
+
 // Add or Update
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -83,6 +95,17 @@ const onSubmit = () => {
               :rules="[requiredValidator]"
               label="Category Position"
               placeholder="Enter Category Position"
+            />
+          </VCol>
+
+          <!-- 👉 Category is feature -->
+          <VCol cols="12">
+            <AppSelect
+              v-model="props.data.is_feature"
+              :items="is_feature"
+              label="Is_Feature"
+              clearable
+              clear-icon="tabler-x"
             />
           </VCol>
 
