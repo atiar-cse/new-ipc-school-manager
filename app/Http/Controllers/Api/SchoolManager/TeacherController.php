@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\SchoolManager;
 
 use App\Http\Controllers\Controller;
 use App\Models\SchoolManager\Teacher;
-use App\Http\Requests\StoreTeacherRequest;
-use App\Http\Requests\UpdateTeacherRequest;
+use App\Http\Requests\SchoolManager\StoreTeacherRequest;
+use App\Http\Requests\SchoolManager\UpdateTeacherRequest;
 use App\Services\ImageUploaderService;
 use Auth;
 
