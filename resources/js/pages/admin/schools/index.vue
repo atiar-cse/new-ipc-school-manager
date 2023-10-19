@@ -188,7 +188,7 @@ const deleteUser = id => {
                 Export
               </VBtn>
 
-              <!-- 👉 Add book button -->
+              <!-- 👉 Add School button -->
               <VBtn
                 prepend-icon="tabler-plus"
                 :to="{ name: 'admin-schools-add' }"
