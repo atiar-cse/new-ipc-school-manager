@@ -48,7 +48,7 @@ return new class extends Migration
             $table->string('sp_phone_w', 50)->nullable();
             $table->string('sp_email', 50)->nullable();
             $table->timestamps();
-            $table->string('deleted_at', 50)->nullable();
+            $table->string('deleted_at')->nullable();
         });
     }
 
@@ -57,6 +57,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('families', 50);
+        Schema::dropIfExists('families');
     }
 };

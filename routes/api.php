@@ -78,7 +78,9 @@ Route::prefix('/v1')->group(function () {
         Route::apiResource('/teachers', TeacherController::class);
     });
     Route::prefix('/school-admin')->group(function () {
-        Route::apiResource('/teachers', FamilyController::class);
+        Route::apiResource('/families', FamilyController::class);
+        Route::get('/families/trashed', [FamilyController::class, 'transedFamilies'])->name("families.trashed");
+        Route::get('/families/trashed', [FamilyController::class, 'restore'])->name("families.restore");
     });
 });
 

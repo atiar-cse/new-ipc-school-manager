@@ -12,14 +12,19 @@ use Exception;
 
 class FamilyController extends Controller
 {
-    protected $user_id;
+    protected $school_id;
     public function __construct()
     {
-        $this->user_id = 1; //Auth::user()->school->school_id;
+        $this->school_id = 1; //Auth::user()->school->school_id;
     }
     public function index()
     {
-        return Family::where('school_id', $this->user_id)->paginate();
+        return Family::where('school_id', $this->school_id)->paginate();
+    }
+
+    public function transedFamilies()
+    {
+        return Family::onlyTrashed()->where('school_id', $this->school_id)->paginate();
     }
     public function store(StoreFamilyRequest $request)
     {
@@ -35,7 +40,7 @@ class FamilyController extends Controller
             $user->password  = Hash::make($request->password);
             $user->save();
 
-            $request->merge(['school_id' => $this->user_id]);
+            $request->merge(['school_id' => $this->school_id]);
             $family = Family::create($request->all());
             DB::commit();
 
@@ -55,7 +60,7 @@ class FamilyController extends Controller
     }
     public function show(Family $family)
     {
-        return $family->where('school_id', $this->user_id)->first();
+        return $family->where('school_id', $this->school_id)->firstOrFail();
     }
     public function update(UpdateFamilyRequest $request, Family $family)
     {
@@ -91,11 +96,33 @@ class FamilyController extends Controller
     }
     public function destroy(Family $family)
     {
-        $family->delete();
+        $family->where('school_id', $this->school_id)->where('id', $family->id)->delete();
         return response()->json([
             'success'   => true,
             'message'   => 'Family has been deleted successfully',
             'data'      => $family
         ], 200);
+    }
+
+    public function restore($id)
+    {
+        try {
+            DB::beginTransaction();
+            $family = Family::withTrashed()->where('school_id', $this->school_id)->where('id', $id)->restore();
+            //Student::withTrashed()->where('school_id', $this->school_id)->where('family_id', $id)->restore();
+            DB::commit();
+
+            return response()->json([
+                'success'   => true,
+                'message'   => 'Family has been restored successfully',
+                'data'      => $family
+            ], 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success'   => false,
+                'message'   =>  $e->getMessage(),
+            ], 500);
+        }
     }
 }
