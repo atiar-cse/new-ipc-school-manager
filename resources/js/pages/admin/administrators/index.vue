@@ -156,7 +156,7 @@ const deleteUser = id => {
   <section>
     <VRow>
       <VCol cols="12">
-        <VCard title="All Books">
+        <VCard title="All Admin">
           <!-- 👉 Filters -->
           <!-- <VDivider /> -->
 
@@ -196,12 +196,12 @@ const deleteUser = id => {
                 Export
               </VBtn>
 
-              <!-- 👉 Add book button -->
+              <!-- 👉 Add administrator button -->
               <VBtn
                 prepend-icon="tabler-plus"
-                :to="{ name: 'admin-categories-add' }"
+                :to="{ name: 'admin-administrators-add' }"
               >
-                Add New Category
+                Add New Admin
               </VBtn>
             </div>
           </VCardText>
