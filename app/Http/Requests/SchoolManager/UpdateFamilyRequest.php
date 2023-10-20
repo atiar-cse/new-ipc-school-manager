@@ -22,6 +22,7 @@ class UpdateFamilyRequest extends FormRequest
     }
     public function rules(): array
     {
+
         return [
             'title' => 'required|max:128',
             'father_name' => 'max:60',

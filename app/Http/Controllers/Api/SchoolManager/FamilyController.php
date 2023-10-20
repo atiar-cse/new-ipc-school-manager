@@ -9,6 +9,7 @@ use App\Http\Requests\SchoolManager\StoreFamilyRequest;
 use App\Http\Requests\SchoolManager\UpdateFamilyRequest;
 use Illuminate\Support\Facades\Hash;
 use Exception;
+use DB;
 
 class FamilyController extends Controller
 {
@@ -19,12 +20,12 @@ class FamilyController extends Controller
     }
     public function index()
     {
-        return Family::where('school_id', $this->school_id)->paginate();
+        return Family::select('id', 'title', 'father_name', 'mother_name', 'city')->where('school_id', $this->school_id)->paginate();
     }
 
     public function transedFamilies()
     {
-        return Family::onlyTrashed()->where('school_id', $this->school_id)->paginate();
+        return Family::select('id', 'title', 'father_name', 'mother_name', 'city')->onlyTrashed()->where('school_id', $this->school_id)->paginate();
     }
     public function store(StoreFamilyRequest $request)
     {
@@ -35,12 +36,14 @@ class FamilyController extends Controller
             $user->last_name = $request->last_name;
             $user->username = $request->username;
             $user->email = $request->email;
-            $user->role_id = $request->role_id;
+            $user->role_id = $request->role_id ?? 3;
             $user->currency_id = $request->currency_id;
             $user->password  = Hash::make($request->password);
             $user->save();
 
             $request->merge(['school_id' => $this->school_id]);
+            $request->merge(['user_id' => $user->id]);
+
             $family = Family::create($request->all());
             DB::commit();
 
@@ -60,21 +63,25 @@ class FamilyController extends Controller
     }
     public function show(Family $family)
     {
-        return $family->where('school_id', $this->school_id)->firstOrFail();
+        return $family->with('user')->where('school_id', $this->school_id)->firstOrFail();
     }
     public function update(UpdateFamilyRequest $request, Family $family)
     {
+
         try {
             DB::beginTransaction();
 
-            $user = User::where('id', $family->user_id)->first();
+            $user = User::where('id', $family->user_id)->firstOrFail();
+
             $user->first_name = $request->first_name;
             $user->last_name = $request->last_name;
             $user->username = $request->username;
             $user->email = $request->email;
             $user->role_id = $request->role_id;
-            $user->currency_id = $request->currency_id;
-            $user->password  = Hash::make($request->password);
+            //$user->currency_id = $request->currency_id;
+            if (!empty($request->password)) {
+                $user->password  = Hash::make($request->password);
+            }
             $user->save();
 
             $family->update($request->all());
