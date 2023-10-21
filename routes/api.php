@@ -80,7 +80,7 @@ Route::prefix('/v1')->group(function () {
     Route::prefix('/school-admin')->group(function () {
         Route::apiResource('/families', FamilyController::class);
         Route::get('/families/trashed', [FamilyController::class, 'transedFamilies'])->name("families.trashed");
-        Route::get('/families/trashed', [FamilyController::class, 'restore'])->name("families.restore");
+        Route::get('/families/restore', [FamilyController::class, 'restore'])->name("families.restore");
     });
 });
 
