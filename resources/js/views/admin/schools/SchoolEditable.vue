@@ -5,11 +5,11 @@ import {
 import axios from '@axios'
 import { useSchoolsStore } from './useSchoolsStore'
 const tab = ref('general')
-const schoolName = ref('')
-const mainUser = ref('')
-const country = ref()
-const birthDate = ref('')
-const phoneNo = ref()
+//const schoolName = ref('')
+//const mainUser = ref('')
+//const country = ref()
+//const birthDate = ref('')
+//const phoneNo = ref()
 
 const countryList = [
   'USA',
@@ -32,19 +32,19 @@ const languageList = [
   'Korean',
 ]
 
-const username = ref('')
-const email = ref('')
-const password = ref('')
-const cPassword = ref('')
-const twitterLink = ref('')
-const facebookLink = ref('')
-const googlePlusLink = ref('')
-const linkedInLink = ref('')
-const instagramLink = ref('')
-const quoraLink = ref('')
-const languages = ref([])
-const isPasswordVisible = ref(false)
-const isCPasswordVisible = ref(false)
+//const username = ref('')
+//const email = ref('')
+//const password = ref('')
+//const cPassword = ref('')
+//const twitterLink = ref('')
+//const facebookLink = ref('')
+//const googlePlusLink = ref('')
+//const linkedInLink = ref('')
+//const instagramLink = ref('')
+//const quoraLink = ref('')
+//const languages = ref([])
+//const isPasswordVisible = ref(false)
+//const isCPasswordVisible = ref(false)
 
 const props = defineProps({
   data: {

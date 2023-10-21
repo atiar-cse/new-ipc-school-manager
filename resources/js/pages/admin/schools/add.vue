@@ -51,8 +51,8 @@ const schoolData = ref({
   // },
   id: '',
   name: '',
-  position: '',
-  is_feature: '',
+  //position: '',
+ // is_feature: '',
   //icon: '',
   //description: '',
 })
