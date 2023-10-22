@@ -11,8 +11,8 @@ const selectedRole = ref()
 const selectedPlan = ref()
 const selectedStatus = ref()
 const totalPage = ref(1)
-const totalUsers = ref(0)
-const users = ref([])
+const totalSchools = ref(0)
+const schools = ref([])
 
 const options = ref({
   page: 1,
@@ -45,8 +45,8 @@ const headers = [
 ]
 
 // 👉 Fetching users
-const fetchUsers = () => {
-  schoolListStore.fetchUsers({
+const fetchSchools = () => {
+  schoolListStore.fetchSchools({
     q: searchQuery.value,
     status: selectedStatus.value,
     plan: selectedPlan.value,
@@ -54,16 +54,16 @@ const fetchUsers = () => {
     options: options.value,
   }).then(response => {
 
-    users.value = response.data.data
+    schools.value = response.data.data
     totalPage.value = response.data.to
-    totalUsers.value = response.data.total
+    totalSchools.value = response.data.total
     options.value.page = response.data.current_page
   }).catch(error => {
     console.error(error)
   })
 }
 
-watchEffect(fetchUsers)
+watchEffect(fetchSchools)
 
 // 👉 search filters
 
@@ -129,18 +129,18 @@ const resolveUserStatusVariant = stat => {
 }
 
 
-const addNewUser = userData => {
-  bookListStore.addUser(userData)
+const addNewSchool = schoolData => {
+  schoolListStore.addSchool(schoolData)
 
   // refetch User
-  fetchUsers()
+  fetchSchools()
 }
 
-const deleteUser = id => {
-  bookListStore.deleteUser(id)
+const deleteSchool = id => {
+  schoolListStore.deleteSchool(id)
 
   // refetch User
-  fetchUsers()
+  fetchSchools()
 }
 </script>
 
@@ -148,7 +148,7 @@ const deleteUser = id => {
   <section>
     <VRow>
       <VCol cols="12">
-        <VCard title="All Books">
+        <VCard title="All Schools">
           <!-- 👉 Filters -->
           <!-- <VDivider /> -->
 
@@ -204,14 +204,14 @@ const deleteUser = id => {
           <VDataTableServer
             v-model:items-per-page="options.itemsPerPage"
             v-model:page="options.page"
-            :items="users"
-            :items-length="totalUsers"
+            :items="schools"
+            :items-length="totalSchools"
             :headers="headers"
             class="text-no-wrap"
             @update:options="options = $event"
           >
-            <!-- User -->
-            <!-- <template #item.user="{ item }">
+            <!-- School -->
+            <!-- <template #item.school="{ item }">
               <div class="d-flex align-center">
                 <VAvatar
                   size="34"
@@ -229,7 +229,7 @@ const deleteUser = id => {
                 <div class="d-flex flex-column">
                   <h6 class="text-base">
                     <RouterLink
-                      :to="{ name: 'apps-user-view-id', params: { id: item.raw.id } }"
+                      :to="{ name: 'admin-schools-view-id', params: { id: item.raw.id } }"
                       class="font-weight-medium user-list-name"
                     >
                       {{ item.raw.fullName }}
@@ -277,7 +277,7 @@ const deleteUser = id => {
 
             <!-- Actions -->
             <template #item.actions="{ item }">
-              <IconBtn @click="deleteUser(item.raw.id)">
+              <IconBtn @click="deleteSchool(item.raw.id)">
                 <VIcon icon="tabler-trash" />
               </IconBtn>
 
@@ -298,7 +298,7 @@ const deleteUser = id => {
 
                 <VMenu activator="parent">
                   <VList>
-                    <!-- <VListItem :to="{ name: 'apps-user-view-id', params: { id: item.raw.id } }">
+                    <!-- <VListItem :to="{ name: 'admin-schools-view-id', params: { id: item.raw.id } }">
                       <template #prepend>
                         <VIcon icon="tabler-eye" />
                       </template>
@@ -313,7 +313,7 @@ const deleteUser = id => {
                       <VListItemTitle>Edit</VListItemTitle>
                     </VListItem>
 
-                    <VListItem @click="deleteUser(item.raw.id)">
+                    <VListItem @click="deleteSchool(item.raw.id)">
                       <template #prepend>
                         <VIcon icon="tabler-trash" />
                       </template>
@@ -329,12 +329,12 @@ const deleteUser = id => {
               <VDivider />
               <div class="d-flex align-center justify-sm-space-between justify-center flex-wrap gap-3 pa-5 pt-3">
                 <p class="text-sm text-disabled mb-0">
-                  {{ paginationMeta(options, totalUsers) }}
+                  {{ paginationMeta(options, totalSchools) }}
                 </p>
 
                 <VPagination
                   v-model="options.page"
-                  :length="Math.ceil(totalUsers / options.itemsPerPage)"
+                  :length="Math.ceil(totalSchools / options.itemsPerPage)"
                   :total-visible="$vuetify.display.xs ? 1 : Math.ceil(totalUsers / options.itemsPerPage)"
                 >
                   <template #prev="slotProps">

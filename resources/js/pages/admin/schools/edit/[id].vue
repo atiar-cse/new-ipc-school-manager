@@ -2,21 +2,21 @@
 import BookEditable from '@/views/admin/books/BookEditable.vue'
 
 // Store
-import { useBooksStore } from '@/views/admin/books/useBooksStore'
+import { useSchoolsStore } from '@/views/admin/schools/useSchoolsStore'
 
-const bookListStore = useBooksStore()
+const schoolListStore = useSchoolsStore()
 const route = useRoute()
 const bookData = ref()
 
 // 👉 fetchUser
-bookListStore.fetchUser(Number(route.params.id)).then(response => {
+schoolListStore.fetchSchool(Number(route.params.id)).then(response => {
   // bookData.value = {
   //   id: response.data.id,
   //   name: response.data.name,
   //   book_category_id: response.data.book_category_id,
   //   description: response.data.description,
   // }
-  bookData.value = response.data  
+  schoolData.value = response.data  
 }).catch(error => {
   console.log(error)
 })
@@ -25,18 +25,18 @@ bookListStore.fetchUser(Number(route.params.id)).then(response => {
 
 <template>
   <VRow>
-    <!-- 👉 BookEditable   -->
+    <!-- 👉 schoolEditable   -->
     <VCol
-      v-if="bookData?.id"
+      v-if="schoolData?.id"
       cols="12"
       md="9"
     >
-      <VCard title="Edit Book">
-        <BookEditable :data="bookData" />
+      <VCard title="Edit School">
+        <SchoolEditable :data="schoolData" />
       </VCard>
     </VCol>
 
-    <!-- 👉 Right Column: Book Action -->
+    <!-- 👉 Right Column: School Action -->
     <VCol
       cols="12"
       md="3"
@@ -48,7 +48,7 @@ bookListStore.fetchUser(Number(route.params.id)).then(response => {
             block
             variant="outlined"
             prepend-icon="tabler-arrow-left"
-            :to="{ name: 'admin-books' }"
+            :to="{ name: 'admin-schools' }"
           >
             Back to List
           </VBtn>          
