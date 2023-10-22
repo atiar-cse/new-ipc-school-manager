@@ -127,7 +127,11 @@ const onSubmit = () => {
         class="disable-tab-transition"
       >
         <VWindowItem value="general">
-          <VForm class="mt-2">
+          <VForm class="mt-2"
+            ref="refForm"
+            v-model="isFormValid"
+            @submit.prevent="onSubmit"
+          >
             <VRow>
               <VCol
                 md="6"
@@ -236,6 +240,15 @@ const onSubmit = () => {
               
             </VRow>
           </VForm>
+          <VCardText class="d-flex gap-4">
+            <VBtn>Submit</VBtn>
+            <VBtn
+              color="secondary"
+              variant="tonal"
+            >
+              Cancel
+            </VBtn>
+          </VCardText>
         </VWindowItem>
 
         <VWindowItem value="address">
