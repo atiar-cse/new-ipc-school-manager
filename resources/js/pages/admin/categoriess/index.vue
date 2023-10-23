@@ -2,17 +2,19 @@
 import { VDataTableServer } from 'vuetify/labs/VDataTable'
 import { paginationMeta } from '@/@paginate/utils'
 // import AddNewUserDrawer from '@/views/apps/user/list/AddNewUserDrawer.vue'
-import { useSchoolsStore } from '@/views/admin/schools/useSchoolsStore'
+import { useCategoriessStore } from '@/views/admin/categoriess/useCategoriessStore'
+//import { useSchoolCategoriesStore } from '/resources/js/views/admin/schoolCategories/useSchoolCategoriesStore.js';
+
 import { avatarText } from '@core/utils/formatters'
 
-const schoolListStore = useSchoolsStore()
+const CategoryyListStore = useCategoriessStore()
 const searchQuery = ref('')
 const selectedRole = ref()
 const selectedPlan = ref()
 const selectedStatus = ref()
 const totalPage = ref(1)
-const totalSchools = ref(0)
-const schools = ref([])
+const totalUsers = ref(0)
+const users = ref([])
 
 const options = ref({
   page: 1,
@@ -31,12 +33,8 @@ const headers = [
   {
     title: 'Name',
     key: 'name',
-  },  
-    
-  {
-    title: 'created at',
-    key: 'created_at',
-  },  
+  }, 
+     
   {
     title: 'Actions',
     key: 'actions',
@@ -45,8 +43,8 @@ const headers = [
 ]
 
 // 👉 Fetching users
-const fetchSchools = () => {
-  schoolListStore.fetchSchools({
+const fetchUsers = () => {
+  CategoryyListStore.fetchUsers({
     q: searchQuery.value,
     status: selectedStatus.value,
     plan: selectedPlan.value,
@@ -54,16 +52,16 @@ const fetchSchools = () => {
     options: options.value,
   }).then(response => {
 
-    schools.value = response.data.data
+    users.value = response.data.data
     totalPage.value = response.data.to
-    totalSchools.value = response.data.total
+    totalUsers.value = response.data.total
     options.value.page = response.data.current_page
   }).catch(error => {
     console.error(error)
   })
 }
 
-watchEffect(fetchSchools)
+watchEffect(fetchUsers)
 
 // 👉 search filters
 
@@ -129,18 +127,18 @@ const resolveUserStatusVariant = stat => {
 }
 
 
-const addNewSchool = schoolData => {
-  schoolListStore.addSchool(schoolData)
+const addNewUser = userData => {
+  CategoryyListStore.addUser(userData)
 
   // refetch User
-  fetchSchools()
+  fetchUsers()
 }
 
-const deleteSchool = id => {
-  schoolListStore.deleteSchool(id)
+const deleteUser = id => {
+  CategoryyListStore.deleteUser(id)
 
   // refetch User
-  fetchSchools()
+  fetchUsers()
 }
 </script>
 
@@ -148,7 +146,7 @@ const deleteSchool = id => {
   <section>
     <VRow>
       <VCol cols="12">
-        <VCard title="All Schools">
+        <VCard title="All Books">
           <!-- 👉 Filters -->
           <!-- <VDivider /> -->
 
@@ -188,12 +186,12 @@ const deleteSchool = id => {
                 Export
               </VBtn>
 
-              <!-- 👉 Add School button -->
+              <!-- 👉 Add book button -->
               <VBtn
                 prepend-icon="tabler-plus"
-                :to="{ name: 'admin-schools-add' }"
+                :to="{ name: 'admin-categoriess-add' }"
               >
-                Add New School
+                Add New Category
               </VBtn>
             </div>
           </VCardText>
@@ -204,14 +202,14 @@ const deleteSchool = id => {
           <VDataTableServer
             v-model:items-per-page="options.itemsPerPage"
             v-model:page="options.page"
-            :items="schools"
-            :items-length="totalSchools"
+            :items="users"
+            :items-length="totalUsers"
             :headers="headers"
             class="text-no-wrap"
             @update:options="options = $event"
           >
-            <!-- School -->
-            <!-- <template #item.school="{ item }">
+            <!-- User -->
+            <!-- <template #item.user="{ item }">
               <div class="d-flex align-center">
                 <VAvatar
                   size="34"
@@ -229,7 +227,7 @@ const deleteSchool = id => {
                 <div class="d-flex flex-column">
                   <h6 class="text-base">
                     <RouterLink
-                      :to="{ name: 'admin-schools-view-id', params: { id: item.raw.id } }"
+                      :to="{ name: 'apps-user-view-id', params: { id: item.raw.id } }"
                       class="font-weight-medium user-list-name"
                     >
                       {{ item.raw.fullName }}
@@ -277,11 +275,11 @@ const deleteSchool = id => {
 
             <!-- Actions -->
             <template #item.actions="{ item }">
-              <IconBtn @click="deleteSchool(item.raw.id)">
+              <IconBtn @click="deleteUser(item.raw.id)">
                 <VIcon icon="tabler-trash" />
               </IconBtn>
 
-              <IconBtn :to="{ name: 'admin-schools-edit-id', params: { id: item.raw.id } }">
+              <IconBtn :to="{ name: 'admin-categories-edit-id', params: { id: item.raw.id } }">
                 <VIcon icon="tabler-edit" />
               </IconBtn>
 
@@ -298,7 +296,7 @@ const deleteSchool = id => {
 
                 <VMenu activator="parent">
                   <VList>
-                    <!-- <VListItem :to="{ name: 'admin-schools-view-id', params: { id: item.raw.id } }">
+                    <!-- <VListItem :to="{ name: 'apps-user-view-id', params: { id: item.raw.id } }">
                       <template #prepend>
                         <VIcon icon="tabler-eye" />
                       </template>
@@ -306,14 +304,14 @@ const deleteSchool = id => {
                       <VListItemTitle>View</VListItemTitle>
                     </VListItem> -->
 
-                    <VListItem :to="{ name: 'admin-schools-edit-id', params: { id: item.raw.id } }">
+                    <VListItem :to="{ name: 'admin-categories-edit-id', params: { id: item.raw.id } }">
                       <template #prepend>
                         <VIcon icon="tabler-pencil" />
                       </template>
                       <VListItemTitle>Edit</VListItemTitle>
                     </VListItem>
 
-                    <VListItem @click="deleteSchool(item.raw.id)">
+                    <VListItem @click="deleteUser(item.raw.id)">
                       <template #prepend>
                         <VIcon icon="tabler-trash" />
                       </template>
@@ -329,12 +327,12 @@ const deleteSchool = id => {
               <VDivider />
               <div class="d-flex align-center justify-sm-space-between justify-center flex-wrap gap-3 pa-5 pt-3">
                 <p class="text-sm text-disabled mb-0">
-                  {{ paginationMeta(options, totalSchools) }}
+                  {{ paginationMeta(options, totalUsers) }}
                 </p>
 
                 <VPagination
                   v-model="options.page"
-                  :length="Math.ceil(totalSchools / options.itemsPerPage)"
+                  :length="Math.ceil(totalUsers / options.itemsPerPage)"
                   :total-visible="$vuetify.display.xs ? 1 : Math.ceil(totalUsers / options.itemsPerPage)"
                 >
                   <template #prev="slotProps">

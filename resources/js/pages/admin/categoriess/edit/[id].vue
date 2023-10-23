@@ -1,22 +1,22 @@
 <script setup>
-import BookEditable from '@/views/admin/books/BookEditable.vue'
+import CategoryEditable from '@/views/admin/categories/CategoryEditable.vue'
 
 // Store
-import { useSchoolsStore } from '@/views/admin/schools/useSchoolsStore'
+import { useCategoriesStore } from '@/views/admin/categories/useCategoriesStore'
 
-const schoolListStore = useSchoolsStore()
+const categoryListStore = useCategoriesStore()
 const route = useRoute()
-const bookData = ref()
+const categoryData = ref()
 
 // 👉 fetchUser
-schoolListStore.fetchSchool(Number(route.params.id)).then(response => {
+categoryListStore.fetchUser(Number(route.params.id)).then(response => {
   // bookData.value = {
   //   id: response.data.id,
   //   name: response.data.name,
   //   book_category_id: response.data.book_category_id,
   //   description: response.data.description,
   // }
-  schoolData.value = response.data  
+  categoryData.value = response.data  
 }).catch(error => {
   console.log(error)
 })
@@ -25,18 +25,18 @@ schoolListStore.fetchSchool(Number(route.params.id)).then(response => {
 
 <template>
   <VRow>
-    <!-- 👉 schoolEditable   -->
+    <!-- 👉 CategoryEditable   -->
     <VCol
-      v-if="schoolData?.id"
+      v-if="categoryData?.id"
       cols="12"
       md="9"
     >
-      <VCard title="Edit School">
-        <SchoolEditable :data="schoolData" />
+      <VCard title="Edit Book">
+        <CategoryEditable :data="categoryData" />
       </VCard>
     </VCol>
 
-    <!-- 👉 Right Column: School Action -->
+    <!-- 👉 Right Column: Book Action -->
     <VCol
       cols="12"
       md="3"
@@ -48,7 +48,7 @@ schoolListStore.fetchSchool(Number(route.params.id)).then(response => {
             block
             variant="outlined"
             prepend-icon="tabler-arrow-left"
-            :to="{ name: 'admin-schools' }"
+            :to="{ name: 'admin-categories' }"
           >
             Back to List
           </VBtn>          

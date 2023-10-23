@@ -6,15 +6,20 @@ export default [
       to: 'admin-books', // dash means slash in url address bar
     },  
     {
+      title: 'Book Categories',
+      icon: { icon: 'tabler-tag' },
+      to: 'admin-categories', // dash means slash in url address bar
+    }, 
+    {
       title: 'Schools',
       icon: { icon: 'tabler-school' },
       to: 'admin-schools', // dash means slash in url address bar
     },  
     {
-      title: 'Categories',
+      title: 'School Categories',
       icon: { icon: 'tabler-tag' },
-      to: 'admin-categories', // dash means slash in url address bar
-    },  
+      to: 'admin-categoriess', // dash means slash in url address bar
+    }, 
     {
       title: 'Parents',
       icon: { icon: 'tabler-app-window' },

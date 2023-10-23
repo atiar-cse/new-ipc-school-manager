@@ -2,49 +2,54 @@
 import {
   requiredValidator,
 } from '@validators'
-import axios from '@axios'
+//import axios from '@axios'
 import { useSchoolsStore } from './useSchoolsStore'
 const tab = ref('general')
-const schoolName = ref('')
-const mainUser = ref('')
-const country = ref()
-const birthDate = ref('')
-const phoneNo = ref()
+//const schoolName = ref('')
+//const mainUser = ref('')
+//const country = ref()
+//const birthDate = ref('')
+//const phoneNo = ref()
 
-const countryList = [
-  'USA',
-  'Canada',
-  'UK',
-  'Denmark',
-  'Germany',
-  'Iceland',
-  'Israel',
-  'Mexico',
+const currencyList = [
+  'AR$',
+  'Euro',
+  'USD',
+  'GBP',
+  'CAD',
+  'Rs.',
+  'AUD',
+  'AED',
 ]
 
-const languageList = [
-  'English',
-  'German',
-  'French',
-  'Spanish',
-  'Portuguese',
-  'Russian',
-  'Korean',
+const categoryList = [
+  'Test1',
+  'Test2',
+  'Test3',
+  'Test4',
+  'Test5',
+  'Test6',
+  'Test7',
+]
+const adminList = [
+  'Admin1',
+  'Admin2',
+  'Admin3',
 ]
 
-const username = ref('')
-const email = ref('')
-const password = ref('')
-const cPassword = ref('')
-const twitterLink = ref('')
-const facebookLink = ref('')
-const googlePlusLink = ref('')
-const linkedInLink = ref('')
-const instagramLink = ref('')
-const quoraLink = ref('')
-const languages = ref([])
-const isPasswordVisible = ref(false)
-const isCPasswordVisible = ref(false)
+//const username = ref('')
+//const email = ref('')
+//const password = ref('')
+//const cPassword = ref('')
+//const twitterLink = ref('')
+//const facebookLink = ref('')
+//const googlePlusLink = ref('')
+//const linkedInLink = ref('')
+//const instagramLink = ref('')
+//const quoraLink = ref('')
+//const languages = ref([])
+//const isPasswordVisible = ref(false)
+//const isCPasswordVisible = ref(false)
 
 const props = defineProps({
   data: {
@@ -85,9 +90,9 @@ const onSubmit = () => {
       // })
 
       if(props.data.id){
-        schoolListStore.updateUser(props.data) // Update
+        schoolListStore.updateSchool(props.data) // Update
       } else {
-        schoolListStore.addUser(props.data) // Add new
+        schoolListStore.addSchool(props.data) // Add new
       }
       
       router.replace('/admin/schools')    
@@ -122,15 +127,21 @@ const onSubmit = () => {
         class="disable-tab-transition"
       >
         <VWindowItem value="general">
-          <VForm class="mt-2">
+          <VForm class="mt-2"
+            ref="refForm"
+            v-model="isFormValid"
+            @submit.prevent="onSubmit"
+          >
             <VRow>
               <VCol
                 md="6"
                 cols="12"
               >
                 <AppTextField
-                  v-model="schoolName"
-                  label="School name"
+                v-model="props.data.name"
+                :rules="[requiredValidator]"
+                label="School Name"
+                placeholder="Enter School Name"
                 />
                 
               </VCol>
@@ -140,8 +151,10 @@ const onSubmit = () => {
                 cols="12"
               >
                 <AppTextField
-                  v-model="mainUser"
+                  v-model="props.data.name"
+                  :rules="[requiredValidator]"
                   label="Main User"
+                  placeholder="Enter Main User"
                 />
               </VCol>
               <VCol 
@@ -149,9 +162,11 @@ const onSubmit = () => {
                 md="6"
                >
                <AppTextField
-                  v-model="email"
+                  v-model="props.data.email"
+                  :rules="[requiredValidator]"
                   label="Main User Email"
                   suffix="@example.com"
+                  placeholder="Enter Main User Email"
                 />
 
               </VCol>
@@ -160,8 +175,9 @@ const onSubmit = () => {
                 md="6"
                >
                <AppTextField
-                  v-model="password"
+                  v-model="props.data.password"
                   label="Main User Password"
+                  placeholder="Enter Main User Password"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'tabler-eye' : 'tabler-eye-off'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
@@ -175,6 +191,7 @@ const onSubmit = () => {
               <AppTextField
                   v-model="cPassword"
                   label="Confirm Password"
+                  placeholder="Confirm Password"
                   :type="isCPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isCPasswordVisible ? 'tabler-eye' : 'tabler-eye-off'"
                   @click:append-inner="isCPasswordVisible = !isCPasswordVisible"
@@ -186,9 +203,11 @@ const onSubmit = () => {
                 md="6"
               >
               <AppSelect
-                  v-model="country"
-                  :items="countryList"
+                  v-model="props.data.currency"
+                  :items="currencyList"
                   label="Currency Symbol"
+                  placeholder="Select Currency"
+                  
                 />
 
               </VCol>
@@ -198,9 +217,11 @@ const onSubmit = () => {
                 md="6"
               >
                 <AppSelect
-                  v-model="country"
-                  :items="countryList"
+                  v-model="props.data.groupCategory"
+                  :items="categoryList"
                   label="Group Category"
+                  placeholder="Select Group"
+                  
                 />
               </VCol>
 
@@ -209,14 +230,25 @@ const onSubmit = () => {
                 md="6"
               >
               <AppSelect
-                  v-model="country"
-                  :items="countryList"
+                  v-model="props.data.manager"
+                  :items="adminList"
                   label="Manager"
+                  placeholder="Manager"
+                 
                 />
               </VCol>
               
             </VRow>
           </VForm>
+          <VCardText class="d-flex gap-4">
+            <VBtn>Submit</VBtn>
+            <VBtn
+              color="secondary"
+              variant="tonal"
+            >
+              Cancel
+            </VBtn>
+          </VCardText>
         </VWindowItem>
 
         <VWindowItem value="address">
