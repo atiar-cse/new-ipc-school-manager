@@ -54,33 +54,19 @@ Route::prefix('/v1')->group(function () {
      * ====================================================== */
     Route::prefix('/admin')->group(function () {
         Route::apiResource('/groups', GroupController::class);
-    });
-    Route::prefix('/admin')->group(function () {
         Route::apiResource('/schools', SchoolController::class);
-    });
-    Route::prefix('/admin')->group(function () {
         Route::apiResource('/books/category', BookCategoryController::class);
         Route::get('/books/category-dropdown-list', [BookCategoryController::class, 'getCategoryDropdownList']);
-    });
-    Route::prefix('/admin')->group(function () {
         Route::apiResource('/books', BookController::class);
-    });
-    Route::prefix('/admin')->group(function () {
         Route::apiResource('/roles', RoleController::class);
-    });
-    Route::prefix('/admin')->group(function () {
         Route::apiResource('/users', UserController::class);
     });
-
-
     //School Manager
     Route::prefix('/school-admin')->group(function () {
         Route::apiResource('/teachers', TeacherController::class);
-    });
-    Route::prefix('/school-admin')->group(function () {
-        Route::apiResource('/families', FamilyController::class);
         Route::get('/families/trashed', [FamilyController::class, 'transedFamilies'])->name("families.trashed");
         Route::get('/families/restore', [FamilyController::class, 'restore'])->name("families.restore");
+        Route::apiResource('/families', FamilyController::class);
     });
 });
 

@@ -42,7 +42,7 @@ class TeacherController extends Controller
 
     public function show(Teacher $teacher)
     {
-        return $teacher->where('school_id', $this->user_id)->first();
+        return $teacher->where('school_id', $this->user_id)->firstOrFail();
     }
 
     public function update(UpdateTeacherRequest $request, Teacher $teacher)
