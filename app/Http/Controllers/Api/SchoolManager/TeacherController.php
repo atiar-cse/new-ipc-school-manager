@@ -11,16 +11,23 @@ use Auth;
 
 class TeacherController extends Controller
 {
-    protected $user_id;
+    protected $school_id;
     public function __construct()
     {
-        $this->user_id = 1; //Auth::user()->school->school_id;
+        $this->school_id = 1; //Auth::user()->school->school_id;
     }
 
     public function index()
     {
-        return Teacher::where('school_id', $this->user_id)->paginate();
+        return Teacher::where('school_id', $this->school_id)->paginate();
     }
+    public function getTeachersBySchool()
+    {
+        return Teacher::where('school_id', $this->school_id)
+            ->select('id', 'first_name', 'last_name')
+            ->get();
+    }
+
     public function store(StoreTeacherRequest $request)
     {
         if ($request->hasFile('teacher_image')) {
@@ -29,7 +36,7 @@ class TeacherController extends Controller
             $request->merge(['image' => $imagePath]);
         }
 
-        $request->merge(['school_id' => $this->user_id]);
+        $request->merge(['school_id' => $this->school_id]);
 
         $teacher = Teacher::create($request->all());
 
@@ -42,7 +49,7 @@ class TeacherController extends Controller
 
     public function show(Teacher $teacher)
     {
-        return $teacher->where('school_id', $this->user_id)->firstOrFail();
+        return $teacher->where('school_id', $this->school_id)->firstOrFail();
     }
 
     public function update(UpdateTeacherRequest $request, Teacher $teacher)

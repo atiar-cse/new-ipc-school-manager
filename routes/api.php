@@ -13,6 +13,8 @@ use App\Http\Controllers\Api\Admin\SchoolCategoryController;
 
 use App\Http\Controllers\Api\SchoolManager\TeacherController;
 use App\Http\Controllers\Api\SchoolManager\FamilyController;
+use App\Http\Controllers\Api\SchoolManager\ClassController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -65,10 +67,13 @@ Route::prefix('/v1')->group(function () {
     });
     //School Manager
     Route::prefix('/school-admin')->group(function () {
+        Route::get('/teachers/getTeachersBySchool', [TeacherController::class, 'getTeachersBySchool'])->name("teachers.getTeachersBySchool");
         Route::apiResource('/teachers', TeacherController::class);
         Route::get('/families/trashed', [FamilyController::class, 'transedFamilies'])->name("families.trashed");
         Route::get('/families/restore', [FamilyController::class, 'restore'])->name("families.restore");
         Route::apiResource('/families', FamilyController::class);
+        Route::get('/classes/get', [FamilyController::class, 'restore'])->name("families.restore");
+        Route::apiResource('/classes',  ClassController::class);
     });
 });
 
